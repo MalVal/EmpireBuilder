@@ -82,7 +82,7 @@ public class Game implements GameActionListener {
         }
         GridPosition position = renderer.screenToWorld(screenPosition);
         // If the case is already taken
-        if(gameWorld.getWorldState().isOccupied(position)) {
+        if(gameWorld.isOccupied(position)) {
             return;
         }
         Building building = new Building(

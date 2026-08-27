@@ -1,6 +1,7 @@
 package be.malval.empirebuilder.model;
 
 import be.malval.empirebuilder.model.Resource.ResourceStock;
+import be.malval.empirebuilder.model.placeable.Placeable;
 import be.malval.empirebuilder.model.world.WorldChunk;
 import be.malval.empirebuilder.model.world.WorldState;
 import be.malval.empirebuilder.system.WorldGenerator;
@@ -23,6 +24,34 @@ public class GameWorld {
         chunks = new HashMap<>();
     }
 
+    public boolean isOccupied(GridPosition position) {
+        // Building
+        if (worldState.isOccupied(position)) {
+            return true;
+        }
+        // Decoration
+        return hasDecoration(position);
+    }
+
+    private boolean hasDecoration(GridPosition position) {
+        int chunkX = Math.floorDiv(
+                position.getX(),
+                WorldChunk.SIZE
+        );
+        int chunkY = Math.floorDiv(
+                position.getY(),
+                WorldChunk.SIZE
+        );
+        WorldChunk chunk = getChunk(chunkX, chunkY);
+        for (Placeable placeable : chunk.getPlaceables()) {
+            if (placeable.getPosition().equals(position) && !worldState.isDestroyed(position)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    // GETTERS
     public WorldState getWorldState() {
         return worldState;
     }
