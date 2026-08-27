@@ -1,6 +1,6 @@
 package be.malval.empirebuilder.ui;
 
-import be.malval.empirebuilder.GameActionListener;
+import be.malval.empirebuilder.controller.GameActionListener;
 import javafx.scene.layout.BorderPane;
 
 public class GameUI {

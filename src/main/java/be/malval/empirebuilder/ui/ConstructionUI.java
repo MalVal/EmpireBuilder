@@ -1,6 +1,6 @@
 package be.malval.empirebuilder.ui;
 
-import be.malval.empirebuilder.GameActionListener;
+import be.malval.empirebuilder.controller.GameActionListener;
 import be.malval.empirebuilder.model.placeable.building.BuildingType;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;

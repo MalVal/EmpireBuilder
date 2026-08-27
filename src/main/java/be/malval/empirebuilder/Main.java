@@ -1,5 +1,6 @@
 package be.malval.empirebuilder;
 
+import be.malval.empirebuilder.controller.Game;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;

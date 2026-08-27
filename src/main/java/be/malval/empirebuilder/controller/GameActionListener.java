@@ -1,4 +1,4 @@
-package be.malval.empirebuilder;
+package be.malval.empirebuilder.controller;
 
 import be.malval.empirebuilder.model.placeable.building.BuildingType;
 
