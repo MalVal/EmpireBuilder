@@ -107,7 +107,7 @@ public class GameRenderer {
 
     // Draw all the visible placeables
     private void drawPlaceables() {
-        for (Placeable placeable : gameWorld.getPlaceables()) {
+        for (Placeable placeable : gameWorld.getWorldState().getPlaceables()) {
             if (placeable instanceof Building building) {
                 drawBuilding(building);
             }

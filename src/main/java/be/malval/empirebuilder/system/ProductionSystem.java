@@ -7,7 +7,7 @@ import be.malval.empirebuilder.model.placeable.building.Building;
 
 public class ProductionSystem {
     public void update(GameWorld gameWorld, double deltaTime) {
-        for (Placeable placeable : gameWorld.getPlaceables()) {
+        for (Placeable placeable : gameWorld.getWorldState().getPlaceables()) {
             if (!(placeable instanceof Building building)) {
                 continue;
             }

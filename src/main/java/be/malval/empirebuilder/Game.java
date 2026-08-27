@@ -82,14 +82,14 @@ public class Game implements GameActionListener {
         }
         GridPosition position = renderer.screenToWorld(screenPosition);
         // If the case is already taken
-        if(gameWorld.isOccupied(position)) {
+        if(gameWorld.getWorldState().isOccupied(position)) {
             return;
         }
         Building building = new Building(
                 position,
                 selectedBuildingType
         );
-        gameWorld.addPlaceable(building);
+        gameWorld.getWorldState().addPlaceable(building);
         placementMode = false;
         selectedBuildingType = null;
     }
@@ -147,7 +147,7 @@ public class Game implements GameActionListener {
         );
         if (placementMode && mousePosition != null) {
             GridPosition position = renderer.screenToWorld(mousePosition);
-            boolean occupied = gameWorld.isOccupied(position);
+            boolean occupied = gameWorld.getWorldState().isOccupied(position);
             renderer.updatePlacementPreview(
                     mousePosition,
                     occupied
