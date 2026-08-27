@@ -24,7 +24,7 @@ public class WorldGenerator {
         for (int x = 0; x < WorldChunk.SIZE; x++) {
             for (int y = 0; y < WorldChunk.SIZE; y++) {
                 double value = random.nextDouble();
-                if (value < 0.08) {
+                if (value < 0.05) {
                     GridPosition position = new GridPosition(
                             chunkX * WorldChunk.SIZE + x,
                             chunkY * WorldChunk.SIZE + y

@@ -4,6 +4,8 @@ import be.malval.empirebuilder.model.GameWorld;
 import be.malval.empirebuilder.model.GridPosition;
 import be.malval.empirebuilder.model.placeable.Placeable;
 import be.malval.empirebuilder.model.placeable.building.Building;
+import be.malval.empirebuilder.model.placeable.decoration.Decoration;
+import be.malval.empirebuilder.model.world.WorldChunk;
 import javafx.geometry.Point2D;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -39,7 +41,7 @@ public class GameRenderer {
         placementPreview.setVisible(false);
         root.getChildren().add(placementPreview);
         // Draw the world
-        drawGrid();
+        render();
     }
 
     public Pane getRoot() {
@@ -52,6 +54,7 @@ public class GameRenderer {
 
     public void render() {
         drawGrid();
+        drawDecorations();
         drawPlaceables();
         if (placementPreview != null) {
             root.getChildren().add(placementPreview);
@@ -127,8 +130,8 @@ public class GameRenderer {
         );
         switch (building.getType()) {
             case HOUSE -> rectangle.setFill(Color.BLUE);
-            case WOODCUTTER -> rectangle.setFill(Color.BROWN);
-            case MINE -> rectangle.setFill(Color.GRAY);
+            case WOODCUTTER -> rectangle.setFill(Color.BURLYWOOD);
+            case MINE -> rectangle.setFill(Color.DARKGRAY);
             case FIELD ->  rectangle.setFill(Color.YELLOW);
             case STORAGE -> rectangle.setFill(Color.GREEN);
         }
@@ -146,6 +149,44 @@ public class GameRenderer {
             timerText.setY(screenY + 30);
             root.getChildren().add(timerText);
         }
+    }
+
+    private void drawDecorations() {
+        int minChunkX = (int) Math.floor(
+                camera.getX() / (WorldChunk.SIZE * TILE_SIZE)
+        );
+        int maxChunkX = minChunkX + 2;
+        int minChunkY = (int) Math.floor(
+                camera.getY() / (WorldChunk.SIZE * TILE_SIZE)
+        );
+        int maxChunkY = minChunkY + 2;
+        for (WorldChunk chunk : gameWorld.getVisibleChunks(minChunkX, maxChunkX, minChunkY, maxChunkY)) {
+            for (Placeable placeable : chunk.getPlaceables()) {
+                if (placeable instanceof Decoration decoration) {
+                    if (gameWorld.getWorldState().isDestroyed(decoration.getPosition())) {
+                        continue;
+                    }
+                    drawDecoration(decoration);
+                }
+            }
+        }
+    }
+
+    private void drawDecoration(Decoration decoration) {
+        GridPosition position = decoration.getPosition();
+        double screenX = position.getX() * TILE_SIZE - camera.getX();
+        double screenY = position.getY() * TILE_SIZE - camera.getY();
+        Rectangle rectangle = new Rectangle(
+                screenX,
+                screenY,
+                TILE_SIZE,
+                TILE_SIZE
+        );
+        switch (decoration.getType()) {
+            case TREE -> rectangle.setFill(Color.DARKGREEN);
+            case ROCK -> rectangle.setFill(Color.GRAY);
+        }
+        root.getChildren().add(rectangle);
     }
 
     // Update the preview of construction
