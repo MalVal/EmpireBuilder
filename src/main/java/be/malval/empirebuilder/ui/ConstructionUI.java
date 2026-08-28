@@ -44,18 +44,8 @@ public class ConstructionUI {
                 "Construire",
                 event -> listener.onBuildClicked()
         );
-        Button armyButton = createMenuButton(
-                "Armée",
-                event -> listener.onArmyClicked()
-        );
-        Button researchButton = createMenuButton(
-                "Recherche",
-                event -> listener.onResearchClicked()
-        );
         bottomBar.getChildren().addAll(
-                buildButton,
-                armyButton,
-                researchButton
+                buildButton
         );
     }
 

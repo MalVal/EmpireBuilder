@@ -85,16 +85,6 @@ public class Game implements GameActionListener {
         gameWorld.getWorldState().removePlaceable(building);
     }
 
-    @Override
-    public void onArmyClicked() {
-
-    }
-
-    @Override
-    public void onResearchClicked() {
-
-    }
-
     private void onWorldClicked(Point2D screenPosition) {
         GridPosition position = renderer.screenToWorld(screenPosition);
 
