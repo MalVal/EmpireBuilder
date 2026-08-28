@@ -20,6 +20,9 @@ public class WorldState {
     public void addPlaceable(Placeable placeable) {
         placeables.add(placeable);
     }
+    public void removePlaceable(Placeable placeable) {
+        placeables.remove(placeable);
+    }
 
     public boolean isOccupied(GridPosition gridPosition) {
         for (Placeable placeable : placeables) {

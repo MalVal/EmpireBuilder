@@ -81,7 +81,8 @@ public class Game implements GameActionListener {
 
     @Override
     public void onBuildingDestroy(Building building) {
-
+        ui.hideBuilding();
+        gameWorld.getWorldState().removePlaceable(building);
     }
 
     @Override
