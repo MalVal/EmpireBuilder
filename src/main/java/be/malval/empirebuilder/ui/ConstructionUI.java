@@ -127,6 +127,7 @@ public class ConstructionUI {
             case WOOD -> "Bois : ";
             case STONE -> "Pierre : ";
             case WHEAT -> "Blé : ";
+            case GOLD -> "Or : ";
         };
     }
 }

@@ -14,7 +14,6 @@ import javafx.animation.AnimationTimer;
 import javafx.application.Platform;
 import javafx.geometry.Point2D;
 import javafx.scene.Scene;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 
 public class Game implements GameActionListener {

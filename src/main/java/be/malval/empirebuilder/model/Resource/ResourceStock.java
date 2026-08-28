@@ -6,6 +6,7 @@ public class ResourceStock {
     private int wood;
     private int stone;
     private int wheat;
+    private int gold;
 
     // Add
     public void add(ResourceType resourceType, int amount) {
@@ -19,34 +20,12 @@ public class ResourceStock {
             case WHEAT:
                 wheat += amount;
                 break;
+            case GOLD:
+                gold += amount;
+                break;
             default:
                 break;
         }
-    }
-
-    // Remove
-    public boolean removeWood(int amount) {
-        if(wood > amount) {
-            wood -= amount;
-            return true;
-        }
-        return false;
-    }
-
-    public boolean removeStone(int amount) {
-        if(stone > amount) {
-            stone -= amount;
-            return true;
-        }
-        return false;
-    }
-
-    public boolean removeWheat(int amount) {
-        if(wheat > amount) {
-            wheat -= amount;
-            return true;
-        }
-        return false;
     }
 
     public boolean remove(BuildingType buildingType) {
@@ -69,6 +48,12 @@ public class ResourceStock {
                         return false;
                     }
                     wheat -= resourceCost.amount();
+                    break;
+                case GOLD:
+                    if(resourceCost.amount() > gold) {
+                        return false;
+                    }
+                    gold -= resourceCost.amount();
                     break;
                 default:
                     break;
@@ -95,6 +80,11 @@ public class ResourceStock {
                         return false;
                     }
                     break;
+                case GOLD:
+                    if(resourceCost.amount() > gold) {
+                        return false;
+                    }
+                    break;
                 default:
                     break;
             }
@@ -113,5 +103,9 @@ public class ResourceStock {
 
     public int getWheat() {
         return wheat;
+    }
+
+    public int getGold() {
+        return gold;
     }
 }

@@ -6,6 +6,7 @@ import be.malval.empirebuilder.model.Player;
 import be.malval.empirebuilder.model.placeable.Placeable;
 import be.malval.empirebuilder.model.placeable.building.Building;
 import be.malval.empirebuilder.model.placeable.decoration.Decoration;
+import be.malval.empirebuilder.model.placeable.site.Site;
 import be.malval.empirebuilder.model.world.WorldChunk;
 import javafx.geometry.Point2D;
 import javafx.scene.layout.Pane;
@@ -166,6 +167,12 @@ public class GameRenderer {
                     }
                     drawDecoration(decoration);
                 }
+                else if (placeable instanceof Site site) {
+                    if (gameWorld.getWorldState().isDestroyed(site.getPosition())) {
+                        continue;
+                    }
+                    drawSite(site);
+                }
             }
         }
     }
@@ -182,7 +189,8 @@ public class GameRenderer {
         );
         switch (decoration.getType()) {
             case TREE -> rectangle.setFill(Color.DARKGREEN);
-            case ROCK -> rectangle.setFill(Color.GRAY);
+            case ROCK -> rectangle.setFill(Color.LIGHTGRAY);
+            case GOLD_ROCK ->  rectangle.setFill(Color.GOLD);
         }
         root.getChildren().add(rectangle);
         // Draw the durability
@@ -193,6 +201,28 @@ public class GameRenderer {
             durabilityText.setY(screenY + 20);
             root.getChildren().add(durabilityText);
         }
+    }
+
+    private void drawSite(Site site) {
+        GridPosition position = site.getPosition();
+        double screenX = position.x() * TILE_SIZE - camera.getX();
+        double screenY = position.y() * TILE_SIZE - camera.getY();
+        Rectangle rectangle = new Rectangle(
+                screenX,
+                screenY,
+                TILE_SIZE,
+                TILE_SIZE
+        );
+        switch (site.getType()) {
+            case FOREST -> rectangle.setFill(Color.LIGHTGREEN);
+            case STONE_QUARY_IMPURE -> rectangle.setFill(Color.BLACK);
+            case STONE_QUARY_NORMAL ->  rectangle.setFill(Color.GRAY);
+            case STONE_QUARY_PURE ->  rectangle.setFill(Color.DARKGRAY);
+            case GOLD_QUARY_IMPURE ->  rectangle.setFill(Color.PURPLE);
+            case GOLD_QUARY_NORMAL ->  rectangle.setFill(Color.CYAN);
+            case GOLD_QUARY_PURE ->  rectangle.setFill(Color.WHITE);
+        }
+        root.getChildren().add(rectangle);
     }
 
     private void drawPlayer() {

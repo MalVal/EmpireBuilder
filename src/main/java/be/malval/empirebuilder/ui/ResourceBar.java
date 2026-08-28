@@ -12,6 +12,7 @@ public class ResourceBar {
     private final Label woodText;
     private final Label stoneText;
     private final Label wheatText;
+    private final Label goldText;
     private final Label timeText;
 
     public ResourceBar() {
@@ -19,6 +20,7 @@ public class ResourceBar {
         woodText = new Label();
         stoneText = new Label();
         wheatText = new Label();
+        goldText = new Label();
         timeText = new Label();
         root.getChildren().add(createBar());
     }
@@ -31,10 +33,12 @@ public class ResourceBar {
         woodText.getStyleClass().add("resource-text");
         stoneText.getStyleClass().add("resource-text");
         wheatText.getStyleClass().add("resource-text");
+        goldText.getStyleClass().add("resource-text");
         resources.getChildren().addAll(
                 woodText,
                 stoneText,
-                wheatText
+                wheatText,
+                goldText
         );
         timeText.getStyleClass().add("game-time");
         // Resources on left
@@ -48,6 +52,7 @@ public class ResourceBar {
         woodText.setText("Bois : " + stock.getWood());
         stoneText.setText("Pierre : " + stock.getStone());
         wheatText.setText("Blé : " + stock.getWheat());
+        goldText.setText("Or : " + stock.getGold());
     }
 
     public void updateTime(GameTime gameTime) {
