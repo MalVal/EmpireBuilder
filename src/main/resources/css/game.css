@@ -61,17 +61,29 @@
 }
 
 .resource-bar {
-    -fx-background-color: #252525;
-    -fx-border-color: #444444;
-    -fx-border-width: 0 0 2px 0;
-
     -fx-padding: 10px 20px;
+    -fx-background-color: #292929;
+    -fx-border-color: #555555;
+    -fx-border-width: 0 0 2px 0;
+}
+
+.resources-container {
+    -fx-alignment: center-left;
 }
 
 .resource-text {
-    -fx-fill: #eeeeee;
-    -fx-font-size: 16px;
+    -fx-text-fill: white;
+    -fx-font-size: 18px;
     -fx-font-weight: bold;
+}
+
+.game-time {
+    -fx-text-fill: white;
+    -fx-font-size: 28px;
+    -fx-font-weight: bold;
+    -fx-padding: 6px 14px;
+    -fx-background-color: #1f1f1f;
+    -fx-background-radius: 8px;
 }
 
 .game-message {

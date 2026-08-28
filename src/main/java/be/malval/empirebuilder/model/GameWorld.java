@@ -5,6 +5,7 @@ import be.malval.empirebuilder.model.placeable.Placeable;
 import be.malval.empirebuilder.model.placeable.decoration.Decoration;
 import be.malval.empirebuilder.model.world.WorldChunk;
 import be.malval.empirebuilder.model.world.WorldState;
+import be.malval.empirebuilder.system.GameTime;
 import be.malval.empirebuilder.system.WorldGenerator;
 
 import java.util.ArrayList;
@@ -18,6 +19,7 @@ public class GameWorld {
     private final WorldGenerator worldGenerator;
     private final Map<String, WorldChunk> chunks;
     private final Player player;
+    private final GameTime gameTime;
 
     public GameWorld() {
         player = new Player(10 * 64, 5 * 64);
@@ -25,6 +27,7 @@ public class GameWorld {
         resourceStock = new ResourceStock();
         worldGenerator = new WorldGenerator(12345L);
         chunks = new HashMap<>();
+        gameTime = new GameTime();
     }
 
     public boolean isOccupied(GridPosition position) {
@@ -100,5 +103,9 @@ public class GameWorld {
 
     public Player getPlayer() {
         return player;
+    }
+
+    public GameTime getGameTime() {
+        return gameTime;
     }
 }

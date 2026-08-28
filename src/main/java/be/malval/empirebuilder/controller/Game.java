@@ -157,6 +157,7 @@ public class Game implements GameActionListener {
 
     // Update the game
     private void update(double deltaTime) {
+        // Update the move of the player and the camera
         double speed = CAMERA_SPEED * deltaTime;
         double dx = 0;
         double dy = 0;
@@ -174,6 +175,11 @@ public class Game implements GameActionListener {
         }
         gameWorld.getPlayer().move(dx, dy);
         renderer.updateCamera();
+        // Update the time game
+        gameWorld.getGameTime().update(deltaTime);
+        ui.getResourceBar().updateTime(
+                gameWorld.getGameTime()
+        );
         // Update the resources
         productionSystem.update(
                 gameWorld,
