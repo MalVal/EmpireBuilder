@@ -3,6 +3,7 @@ package be.malval.empirebuilder.controller;
 import be.malval.empirebuilder.model.GameWorld;
 import be.malval.empirebuilder.model.GridPosition;
 import be.malval.empirebuilder.model.Resource.ResourceType;
+import be.malval.empirebuilder.model.placeable.Placeable;
 import be.malval.empirebuilder.model.placeable.building.Building;
 import be.malval.empirebuilder.model.placeable.building.BuildingType;
 import be.malval.empirebuilder.model.placeable.decoration.Decoration;
@@ -74,6 +75,16 @@ public class Game implements GameActionListener {
     }
 
     @Override
+    public void onBuildingUpgrade(Building building) {
+
+    }
+
+    @Override
+    public void onBuildingDestroy(Building building) {
+
+    }
+
+    @Override
     public void onArmyClicked() {
 
     }
@@ -91,6 +102,14 @@ public class Game implements GameActionListener {
             placeBuilding(position);
             return;
         }
+
+        // Click on a building
+        Placeable placeable = gameWorld.getPlaceable(position);
+        if (placeable instanceof Building building) {
+            ui.showBuilding(building);
+            return;
+        }
+        ui.hideBuilding();
 
         // Hit a decoration
         Decoration decoration = gameWorld.getDecoration(position);

@@ -80,11 +80,17 @@ public class GameWorld {
         }
         return visibleChunks;
     }
+
     public Placeable getPlaceable(GridPosition position) {
         int chunkX = Math.floorDiv(position.x(), WorldChunk.SIZE);
         int chunkY = Math.floorDiv(position.y(), WorldChunk.SIZE);
         WorldChunk chunk = getChunk(chunkX, chunkY);
         for (Placeable placeable : chunk.getPlaceables()) {
+            if (placeable.getPosition().equals(position)) {
+                return placeable;
+            }
+        }
+        for(Placeable placeable : worldState.getPlaceables()) {
             if (placeable.getPosition().equals(position)) {
                 return placeable;
             }

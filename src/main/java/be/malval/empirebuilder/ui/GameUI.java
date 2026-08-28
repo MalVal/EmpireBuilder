@@ -1,7 +1,9 @@
 package be.malval.empirebuilder.ui;
 
 import be.malval.empirebuilder.controller.GameActionListener;
+import be.malval.empirebuilder.model.placeable.building.Building;
 import javafx.animation.PauseTransition;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -15,6 +17,7 @@ public class GameUI {
     private final StackPane root;
     private final ResourceBar resourceBar;
     private final ConstructionUI constructionUI;
+    private final BuildingUI buildingUI;
     private StackPane pauseMenu;
 
     public GameUI(GameActionListener listener) {
@@ -28,8 +31,22 @@ public class GameUI {
         uiContainer.setBottom(constructionUI.getRoot());
         root.getChildren().add(uiContainer);
         resourceBar.getRoot().setMouseTransparent(true);
+        // Building GUI
+        buildingUI = new BuildingUI(listener);
+        StackPane.setAlignment(
+                buildingUI.getRoot(),
+                Pos.TOP_RIGHT
+        );
+        StackPane.setMargin(
+                buildingUI.getRoot(),
+                new Insets(70, 15, 15, 15)
+        );
+        root.getChildren().add(buildingUI.getRoot());
+        buildingUI.getRoot().setVisible(false);
+        buildingUI.getRoot().setPickOnBounds(true);
     }
 
+    // Show methods
     public void showMessage(String message) {
         Label messageLabel = new Label(message);
         messageLabel.getStyleClass().add("game-message");
@@ -44,6 +61,15 @@ public class GameUI {
                 root.getChildren().remove(messageLabel)
         );
         pause.play();
+    }
+
+    public void showBuilding(Building building) {
+        buildingUI.show(building);
+        buildingUI.getRoot().setVisible(true);
+    }
+
+    public void hideBuilding() {
+        buildingUI.getRoot().setVisible(false);
     }
 
     public void showPauseMenu(Runnable onResume, Runnable onQuit) {
