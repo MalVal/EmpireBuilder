@@ -2,6 +2,7 @@ package be.malval.empirebuilder.controller;
 
 import be.malval.empirebuilder.model.GameWorld;
 import be.malval.empirebuilder.model.GridPosition;
+import be.malval.empirebuilder.model.Resource.ResourceCost;
 import be.malval.empirebuilder.model.Resource.ResourceType;
 import be.malval.empirebuilder.model.placeable.Placeable;
 import be.malval.empirebuilder.model.placeable.building.Building;
@@ -81,6 +82,9 @@ public class Game implements GameActionListener {
     @Override
     public void onBuildingDestroy(Building building) {
         ui.hideBuilding();
+        for(ResourceCost resourceCost : building.getType().getCosts()) {
+            gameWorld.getResourceStock().add(resourceCost.type(), (int) (0.5 * resourceCost.amount()));
+        }
         gameWorld.getWorldState().removePlaceable(building);
     }
 
