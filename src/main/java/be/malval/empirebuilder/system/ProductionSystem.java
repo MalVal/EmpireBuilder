@@ -25,10 +25,6 @@ public class ProductionSystem {
     private void produce(GameWorld gameWorld, Building building) {
         ResourceType resource = building.getType().getResourceType();
         int amount = building.getType().getProductionAmount();
-        switch (resource) {
-            case WOOD -> gameWorld.getResourceStock().addWood(amount);
-            case STONE -> gameWorld.getResourceStock().addStone(amount);
-            case WHEAT -> gameWorld.getResourceStock().addWheat(amount);
-        }
+        gameWorld.getResourceStock().add(resource, amount);
     }
 }

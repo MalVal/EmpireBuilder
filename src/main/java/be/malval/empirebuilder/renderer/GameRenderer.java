@@ -2,6 +2,7 @@ package be.malval.empirebuilder.renderer;
 
 import be.malval.empirebuilder.model.GameWorld;
 import be.malval.empirebuilder.model.GridPosition;
+import be.malval.empirebuilder.model.Player;
 import be.malval.empirebuilder.model.placeable.Placeable;
 import be.malval.empirebuilder.model.placeable.building.Building;
 import be.malval.empirebuilder.model.placeable.decoration.Decoration;
@@ -48,10 +49,6 @@ public class GameRenderer {
         return root;
     }
 
-    public Camera getCamera() {
-        return camera;
-    }
-
     public void render() {
         drawGrid();
         drawDecorations();
@@ -59,6 +56,7 @@ public class GameRenderer {
         if (placementPreview != null) {
             root.getChildren().add(placementPreview);
         }
+        drawPlayer();
     }
 
     // Draw the world (based on the camera)
@@ -108,7 +106,7 @@ public class GameRenderer {
         }
     }
 
-    // Draw all the visible placeables
+    // Draw all the visible objects
     private void drawPlaceables() {
         for (Placeable placeable : gameWorld.getWorldState().getPlaceables()) {
             if (placeable instanceof Building building) {
@@ -120,8 +118,8 @@ public class GameRenderer {
     private void drawBuilding(Building building) {
         // Draw the building
         GridPosition position = building.getPosition();
-        double screenX = position.getX() * TILE_SIZE - camera.getX();
-        double screenY = position.getY() * TILE_SIZE - camera.getY();
+        double screenX = position.x() * TILE_SIZE - camera.getX();
+        double screenY = position.y() * TILE_SIZE - camera.getY();
         Rectangle rectangle = new Rectangle(
                 screenX,
                 screenY,
@@ -174,8 +172,8 @@ public class GameRenderer {
 
     private void drawDecoration(Decoration decoration) {
         GridPosition position = decoration.getPosition();
-        double screenX = position.getX() * TILE_SIZE - camera.getX();
-        double screenY = position.getY() * TILE_SIZE - camera.getY();
+        double screenX = position.x() * TILE_SIZE - camera.getX();
+        double screenY = position.y() * TILE_SIZE - camera.getY();
         Rectangle rectangle = new Rectangle(
                 screenX,
                 screenY,
@@ -187,13 +185,35 @@ public class GameRenderer {
             case ROCK -> rectangle.setFill(Color.GRAY);
         }
         root.getChildren().add(rectangle);
+        // Draw the durability
+        if (decoration.getDurability() < decoration.getType().getMaxDurability()) {
+            Text durabilityText = new Text(decoration.getDurability() + " / " + decoration.getType().getMaxDurability());
+            durabilityText.setFill(Color.WHITE);
+            durabilityText.setX(screenX + 5);
+            durabilityText.setY(screenY + 20);
+            root.getChildren().add(durabilityText);
+        }
+    }
+
+    private void drawPlayer() {
+        Player player = gameWorld.getPlayer();
+        double screenX = player.getX() - camera.getX() - 20;
+        double screenY = player.getY() - camera.getY() - 20;
+        Rectangle playerRectangle = new Rectangle(
+                screenX,
+                screenY,
+                40,
+                40
+        );
+        playerRectangle.setFill(Color.ORANGE);
+        root.getChildren().add(playerRectangle);
     }
 
     // Update the preview of construction
     public void updatePlacementPreview(Point2D mousePosition, boolean occupied) {
         GridPosition position = screenToWorld(mousePosition);
-        double screenX = position.getX() * TILE_SIZE - camera.getX();
-        double screenY = position.getY() * TILE_SIZE - camera.getY();
+        double screenX = position.x() * TILE_SIZE - camera.getX();
+        double screenY = position.y() * TILE_SIZE - camera.getY();
         placementPreview.setX(screenX);
         placementPreview.setY(screenY);
         if (occupied) {
@@ -239,5 +259,17 @@ public class GameRenderer {
         int gridX = (int) Math.floor(worldX / TILE_SIZE);
         int gridY = (int) Math.floor(worldY / TILE_SIZE);
         return new GridPosition(gridX, gridY);
+    }
+
+    public void updateCamera() {
+        Player player = gameWorld.getPlayer();
+        double playerX = player.getX();
+        double playerY = player.getY();
+        double screenCenterX = root.getWidth() / 2;
+        double screenCenterY = root.getHeight() / 2;
+        camera.setPosition(
+                playerX - screenCenterX,
+                playerY - screenCenterY
+        );
     }
 }

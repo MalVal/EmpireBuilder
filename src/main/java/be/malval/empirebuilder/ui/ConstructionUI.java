@@ -1,6 +1,8 @@
 package be.malval.empirebuilder.ui;
 
 import be.malval.empirebuilder.controller.GameActionListener;
+import be.malval.empirebuilder.model.Resource.ResourceCost;
+import be.malval.empirebuilder.model.Resource.ResourceType;
 import be.malval.empirebuilder.model.placeable.building.BuildingType;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -108,11 +110,33 @@ public class ConstructionUI {
     }
 
     private Button createBuildingButton(String text, BuildingType type, GameActionListener listener) {
-        Button button = new Button(text);
+        Button button = new Button();
+        button.setText(
+                text + "\n" + formatCosts(type)
+        );
         button.setOnAction(event ->
                 listener.onBuildingSelected(type)
         );
         button.getStyleClass().add("building-button");
         return button;
+    }
+
+    private String formatCosts(BuildingType type) {
+        StringBuilder text = new StringBuilder();
+        for (ResourceCost cost : type.getCosts()) {
+            text.append(getResourceIcon(cost.type()))
+                    .append(" ")
+                    .append(cost.amount())
+                    .append("  ");
+        }
+        return text.toString().trim();
+    }
+
+    private String getResourceIcon(ResourceType type) {
+        return switch (type) {
+            case WOOD -> "Bois : ";
+            case STONE -> "Pierre : ";
+            case WHEAT -> "Blé : ";
+        };
     }
 }

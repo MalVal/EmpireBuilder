@@ -2,6 +2,7 @@ package be.malval.empirebuilder.model;
 
 import be.malval.empirebuilder.model.Resource.ResourceStock;
 import be.malval.empirebuilder.model.placeable.Placeable;
+import be.malval.empirebuilder.model.placeable.decoration.Decoration;
 import be.malval.empirebuilder.model.world.WorldChunk;
 import be.malval.empirebuilder.model.world.WorldState;
 import be.malval.empirebuilder.system.WorldGenerator;
@@ -16,8 +17,10 @@ public class GameWorld {
     private final ResourceStock resourceStock;
     private final WorldGenerator worldGenerator;
     private final Map<String, WorldChunk> chunks;
+    private final Player player;
 
     public GameWorld() {
+        player = new Player(10 * 64, 5 * 64);
         worldState = new WorldState();
         resourceStock = new ResourceStock();
         worldGenerator = new WorldGenerator(12345L);
@@ -35,11 +38,11 @@ public class GameWorld {
 
     private boolean hasDecoration(GridPosition position) {
         int chunkX = Math.floorDiv(
-                position.getX(),
+                position.x(),
                 WorldChunk.SIZE
         );
         int chunkY = Math.floorDiv(
-                position.getY(),
+                position.y(),
                 WorldChunk.SIZE
         );
         WorldChunk chunk = getChunk(chunkX, chunkY);
@@ -73,5 +76,29 @@ public class GameWorld {
             }
         }
         return visibleChunks;
+    }
+    public Placeable getPlaceable(GridPosition position) {
+        int chunkX = Math.floorDiv(position.x(), WorldChunk.SIZE);
+        int chunkY = Math.floorDiv(position.y(), WorldChunk.SIZE);
+        WorldChunk chunk = getChunk(chunkX, chunkY);
+        for (Placeable placeable : chunk.getPlaceables()) {
+            if (placeable.getPosition().equals(position)) {
+                return placeable;
+            }
+        }
+        return null;
+    }
+
+    public Decoration getDecoration(GridPosition position) {
+        Placeable placeable = getPlaceable(position);
+        if (placeable instanceof Decoration decoration
+                && !worldState.isDestroyed(position)) {
+            return decoration;
+        }
+        return null;
+    }
+
+    public Player getPlayer() {
+        return player;
     }
 }

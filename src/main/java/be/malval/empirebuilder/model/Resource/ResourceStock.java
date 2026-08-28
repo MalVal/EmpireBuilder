@@ -1,21 +1,27 @@
 package be.malval.empirebuilder.model.Resource;
 
+import be.malval.empirebuilder.model.placeable.building.BuildingType;
+
 public class ResourceStock {
     private int wood;
     private int stone;
     private int wheat;
 
     // Add
-    public void addWood(int amount) {
-        wood += amount;
-    }
-
-    public void addStone(int amount) {
-        stone += amount;
-    }
-
-    public void addWheat(int amount) {
-        wheat += amount;
+    public void add(ResourceType resourceType, int amount) {
+        switch (resourceType) {
+            case WOOD:
+                wood += amount;
+                break;
+            case STONE:
+                stone += amount;
+                break;
+            case WHEAT:
+                wheat += amount;
+                break;
+            default:
+                break;
+        }
     }
 
     // Remove
@@ -41,6 +47,59 @@ public class ResourceStock {
             return true;
         }
         return false;
+    }
+
+    public boolean remove(BuildingType buildingType) {
+        for (ResourceCost resourceCost : buildingType.getCosts()) {
+            switch (resourceCost.type()) {
+                case WOOD:
+                    if(resourceCost.amount() > wood) {
+                        return false;
+                    }
+                    wood -= resourceCost.amount();
+                    break;
+                case STONE:
+                    if(resourceCost.amount() > stone) {
+                        return false;
+                    }
+                    stone -= resourceCost.amount();
+                    break;
+                case WHEAT:
+                    if(resourceCost.amount() > wheat) {
+                        return false;
+                    }
+                    wheat -= resourceCost.amount();
+                    break;
+                default:
+                    break;
+            }
+        }
+        return true;
+    }
+
+    public boolean canAfford(BuildingType type) {
+        for (ResourceCost resourceCost : type.getCosts()) {
+            switch (resourceCost.type()) {
+                case WOOD:
+                    if(resourceCost.amount() > wood) {
+                        return false;
+                    }
+                    break;
+                case STONE:
+                    if(resourceCost.amount() > stone) {
+                        return false;
+                    }
+                    break;
+                case WHEAT:
+                    if(resourceCost.amount() > wheat) {
+                        return false;
+                    }
+                    break;
+                default:
+                    break;
+            }
+        }
+        return true;
     }
 
     // GETTERS

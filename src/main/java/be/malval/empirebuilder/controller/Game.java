@@ -2,15 +2,19 @@ package be.malval.empirebuilder.controller;
 
 import be.malval.empirebuilder.model.GameWorld;
 import be.malval.empirebuilder.model.GridPosition;
+import be.malval.empirebuilder.model.Resource.ResourceType;
 import be.malval.empirebuilder.model.placeable.building.Building;
 import be.malval.empirebuilder.model.placeable.building.BuildingType;
+import be.malval.empirebuilder.model.placeable.decoration.Decoration;
 import be.malval.empirebuilder.renderer.GameRenderer;
 import be.malval.empirebuilder.system.ProductionSystem;
 import be.malval.empirebuilder.ui.GameUI;
 import javafx.animation.AnimationTimer;
+import javafx.application.Platform;
 import javafx.geometry.Point2D;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.StackPane;
 
 public class Game implements GameActionListener {
     // Models
@@ -21,12 +25,13 @@ public class Game implements GameActionListener {
     private BuildingType selectedBuildingType;
 
     // GUI
-    private final BorderPane root;
+    private final StackPane gameRoot;
     private final GameRenderer renderer;
     private final GameUI ui;
     private Point2D mousePosition;
 
     // Time
+    private boolean paused = false;
     private long lastTime;
 
     // Movements
@@ -43,14 +48,12 @@ public class Game implements GameActionListener {
         // Models
         gameWorld = new GameWorld();
         // GUI
-        root = new BorderPane();
         renderer = new GameRenderer(gameWorld);
         renderer.setOnWorldClicked(this::onWorldClicked);
         renderer.setOnMouseMoved(this::onMouseMoved);
         ui = new GameUI(this);
-        root.setCenter(renderer.getRoot());
-        root.setTop(ui.getRoot().getTop());
-        root.setBottom(ui.getRoot().getBottom());
+        gameRoot = new StackPane();
+        gameRoot.getChildren().addAll( renderer.getRoot(), ui.getRoot() );
         // System
         productionSystem = new ProductionSystem();
     }
@@ -62,6 +65,10 @@ public class Game implements GameActionListener {
 
     @Override
     public void onBuildingSelected(BuildingType type) {
+        if (!gameWorld.getResourceStock().canAfford(type)) {
+            ui.showMessage("Pas assez de ressources !");
+            return;
+        }
         selectedBuildingType = type;
         placementMode = true;
     }
@@ -77,21 +84,49 @@ public class Game implements GameActionListener {
     }
 
     private void onWorldClicked(Point2D screenPosition) {
-        if (!placementMode) {
+        GridPosition position = renderer.screenToWorld(screenPosition);
+
+        // Building mode
+        if (placementMode) {
+            placeBuilding(position);
             return;
         }
-        GridPosition position = renderer.screenToWorld(screenPosition);
-        // If the case is already taken
-        if(gameWorld.isOccupied(position)) {
+
+        // Hit a decoration
+        Decoration decoration = gameWorld.getDecoration(position);
+        if (decoration != null) {
+            hitDecoration(decoration);
+        }
+    }
+
+    private void placeBuilding(GridPosition position) {
+        if (gameWorld.isOccupied(position)) {
+            ui.showMessage("Pas assez de place !");
             return;
         }
         Building building = new Building(
                 position,
                 selectedBuildingType
         );
-        gameWorld.getWorldState().addPlaceable(building);
+        if(gameWorld.getResourceStock().remove(selectedBuildingType)) {
+            gameWorld.getWorldState().addPlaceable(building);
+        }
         placementMode = false;
         selectedBuildingType = null;
+    }
+
+    private void hitDecoration(Decoration decoration) {
+        decoration.damage(25);
+        if (decoration.isDestroyed()) {
+            GridPosition position = decoration.getPosition();
+            ResourceType resourceType = decoration.getType().getResourceType();
+            int amount = decoration.getType().getResourceAmount();
+            gameWorld.getResourceStock().add(
+                    resourceType,
+                    amount
+            );
+            gameWorld.getWorldState().destroy(position);
+        }
     }
 
     private void onMouseMoved(Point2D position) {
@@ -115,6 +150,7 @@ public class Game implements GameActionListener {
                 case S -> down = false;
                 case Q -> left = false;
                 case D -> right = false;
+                case ESCAPE -> togglePause();
             }
         });
     }
@@ -122,18 +158,23 @@ public class Game implements GameActionListener {
     // Update the game
     private void update(double deltaTime) {
         double speed = CAMERA_SPEED * deltaTime;
+        double dx = 0;
+        double dy = 0;
         if (up) {
-            renderer.getCamera().move(0, -speed);
+            dy -= speed;
         }
         if (down) {
-            renderer.getCamera().move(0, speed);
+            dy += speed;
         }
         if (left) {
-            renderer.getCamera().move(-speed, 0);
+            dx -= speed;
         }
         if (right) {
-            renderer.getCamera().move(speed, 0);
+            dx += speed;
         }
+        gameWorld.getPlayer().move(dx, dy);
+        renderer.updateCamera();
+        // Update the resources
         productionSystem.update(
                 gameWorld,
                 deltaTime
@@ -147,7 +188,7 @@ public class Game implements GameActionListener {
         );
         if (placementMode && mousePosition != null) {
             GridPosition position = renderer.screenToWorld(mousePosition);
-            boolean occupied = gameWorld.getWorldState().isOccupied(position);
+            boolean occupied = gameWorld.isOccupied(position);
             renderer.updatePlacementPreview(
                     mousePosition,
                     occupied
@@ -169,15 +210,36 @@ public class Game implements GameActionListener {
                 double deltaTime =
                         (now - lastTime) / 1_000_000_000.0;
                 lastTime = now;
-                update(deltaTime);
-                render();
+                if (!paused) {
+                    update(deltaTime);
+                    render();
+                }
             }
         };
         timer.start();
     }
 
+    private void togglePause() {
+        paused = !paused;
+        if (paused) {
+            ui.showPauseMenu(this::resumeGame, this::quitGame);
+        }
+        else {
+            ui.hidePauseMenu();
+        }
+    }
+
+    private void resumeGame() {
+        paused = false;
+        ui.hidePauseMenu();
+    }
+
+    private void quitGame() {
+        Platform.exit();
+    }
+
     // GETTERS
-    public BorderPane getRoot() {
-        return root;
+    public StackPane getRoot() {
+        return gameRoot;
     }
 }
