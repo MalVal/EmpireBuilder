@@ -1,24 +1,25 @@
 package be.malval.empirebuilder.model.placeable.site;
 
+import be.malval.empirebuilder.configuration.SiteConfig;
 import be.malval.empirebuilder.model.Resource.ResourceType;
 
 public enum SiteType {
-    FOREST(ResourceType.WOOD, 1650, 1.0),
-    STONE_QUARY_IMPURE(ResourceType.STONE, 1350, 0.65),
-    STONE_QUARY_NORMAL(ResourceType.STONE, 900, 1.0),
-    STONE_QUARY_PURE(ResourceType.STONE, 675, 1.5),
-    GOLD_QUARY_IMPURE(ResourceType.GOLD, 420, 0.65),
-    GOLD_QUARY_NORMAL(ResourceType.GOLD, 280, 1.0),
-    GOLD_QUARY_PURE(ResourceType.GOLD, 210, 1.5);
+    FOREST(SiteConfig.get("FOREST")),
+    STONE_QUARY_IMPURE(SiteConfig.get("STONE_QUARY_IMPURE")),
+    STONE_QUARY_NORMAL(SiteConfig.get("STONE_QUARY_NORMAL")),
+    STONE_QUARY_PURE(SiteConfig.get("STONE_QUARY_PURE")),
+    GOLD_QUARY_IMPURE(SiteConfig.get("GOLD_QUARY_IMPURE")),
+    GOLD_QUARY_NORMAL(SiteConfig.get("GOLD_QUARY_NORMAL")),
+    GOLD_QUARY_PURE(SiteConfig.get("GOLD_QUARY_PURE"));
 
     private final ResourceType resourceType;
     private final int resourceAmount;
     private final double efficiency;
 
-    SiteType(ResourceType resourceType, int resourceAmount, double efficiency) {
-        this.resourceType = resourceType;
-        this.resourceAmount = resourceAmount;
-        this.efficiency = efficiency;
+    SiteType(SiteConfig.SiteData data) {
+        this.resourceType = data.resourceType();
+        this.resourceAmount = data.resourceAmount();
+        this.efficiency = data.efficiency();
     }
 
     public ResourceType getResourceType() {
