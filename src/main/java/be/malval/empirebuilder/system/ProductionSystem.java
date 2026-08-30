@@ -33,6 +33,7 @@ public class ProductionSystem {
             if(site == null) {
                 return;
             }
+            amount = (int) (amount * site.getType().getEfficiency());
             if(!site.removeResource(amount)) {
                 // Destroy the site when no resource
                 gameWorld.getWorldState().destroy(site.getPosition());
