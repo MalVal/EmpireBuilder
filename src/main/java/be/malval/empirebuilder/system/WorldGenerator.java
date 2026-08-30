@@ -10,13 +10,11 @@ import be.malval.empirebuilder.model.world.WorldChunk;
 import java.util.Random;
 
 public class WorldGenerator {
-    private final long seed;
 
-    public WorldGenerator(long seed) {
-        this.seed = seed;
+    public WorldGenerator() {
     }
 
-    public WorldChunk generateChunk(int chunkX, int chunkY) {
+    public static WorldChunk generateChunk(long seed, int chunkX, int chunkY) {
         WorldChunk chunk = new WorldChunk(chunkX, chunkY);
         Random random = new Random(
                 seed

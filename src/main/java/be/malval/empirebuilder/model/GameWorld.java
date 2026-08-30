@@ -18,7 +18,7 @@ import java.util.Map;
 public class GameWorld {
     private final WorldState worldState;
     private final ResourceStock resourceStock;
-    private final WorldGenerator worldGenerator;
+    private final long seed;
     private final Map<String, WorldChunk> chunks;
     private final Player player;
     private final GameTime gameTime;
@@ -27,7 +27,7 @@ public class GameWorld {
         player = new Player(10 * 64, 5 * 64);
         worldState = new WorldState();
         resourceStock = new ResourceStock();
-        worldGenerator = new WorldGenerator(12345L);
+        seed = 12345L;
         chunks = new HashMap<>();
         gameTime = new GameTime();
     }
@@ -70,7 +70,7 @@ public class GameWorld {
 
     public WorldChunk getChunk(int chunkX, int chunkY) {
         String key = chunkX + ":" + chunkY;
-        return chunks.computeIfAbsent(key, ignored -> worldGenerator.generateChunk(chunkX, chunkY));
+        return chunks.computeIfAbsent(key, ignored -> WorldGenerator.generateChunk(seed, chunkX, chunkY));
     }
 
     public List<WorldChunk> getVisibleChunks(int minChunkX, int maxChunkX, int minChunkY, int maxChunkY) {
