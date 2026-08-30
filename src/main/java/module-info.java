@@ -1,6 +1,7 @@
 module be.malval.empirebuilder {
     requires javafx.controls;
     requires javafx.fxml;
+    requires org.json;
 
 
     opens be.malval.empirebuilder to javafx.fxml;

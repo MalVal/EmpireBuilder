@@ -158,3 +158,17 @@
     -fx-background-color: #505050;
     -fx-cursor: hand;
 }
+
+.hover-info {
+    -fx-background-color: rgba(25, 25, 25, 0.9);
+    -fx-text-fill: white;
+
+    -fx-padding: 6px 10px;
+
+    -fx-background-radius: 6px;
+    -fx-border-radius: 6px;
+    -fx-border-color: #666666;
+
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+}

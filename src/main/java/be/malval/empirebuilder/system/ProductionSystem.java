@@ -1,5 +1,6 @@
 package be.malval.empirebuilder.system;
 
+import be.malval.empirebuilder.configuration.LevelConfig;
 import be.malval.empirebuilder.model.GameWorld;
 import be.malval.empirebuilder.model.Resource.ResourceType;
 import be.malval.empirebuilder.model.placeable.Placeable;
@@ -25,7 +26,8 @@ public class ProductionSystem {
 
     private void produce(GameWorld gameWorld, Building building) {
         ResourceType resource = building.getType().getResourceType();
-        int amount = building.getType().getProductionAmount();
+        // Level multiplier
+        int amount = (int) (building.getType().getProductionAmount() * LevelConfig.getMultiplier(building.getLevel()));
         // If the building required a site
         if(building.getType().isRequiredSite()) {
             Site site = gameWorld.getSite(building.getPosition());

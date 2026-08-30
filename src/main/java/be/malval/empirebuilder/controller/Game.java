@@ -4,7 +4,6 @@ import be.malval.empirebuilder.model.GameWorld;
 import be.malval.empirebuilder.model.GridPosition;
 import be.malval.empirebuilder.model.Resource.ResourceCost;
 import be.malval.empirebuilder.model.Resource.ResourceType;
-import be.malval.empirebuilder.model.placeable.Placeable;
 import be.malval.empirebuilder.model.placeable.building.Building;
 import be.malval.empirebuilder.model.placeable.building.BuildingType;
 import be.malval.empirebuilder.model.placeable.decoration.Decoration;
@@ -77,7 +76,8 @@ public class Game implements GameActionListener {
 
     @Override
     public void onBuildingUpgrade(Building building) {
-
+        building.levelUp();
+        ui.showBuilding(building);
     }
 
     @Override
@@ -89,6 +89,7 @@ public class Game implements GameActionListener {
         gameWorld.getWorldState().removePlaceable(building);
     }
 
+    // Events
     private void onWorldClicked(Point2D screenPosition) {
         GridPosition position = renderer.screenToWorld(screenPosition);
 
@@ -164,11 +165,24 @@ public class Game implements GameActionListener {
                     amount
             );
             gameWorld.getWorldState().destroy(position);
+            ui.updateHoverInfo(null);
         }
     }
 
-    private void onMouseMoved(Point2D position) {
-        mousePosition = position;
+    private void onMouseMoved(Point2D screenPosition) {
+        mousePosition = screenPosition;
+        GridPosition position = renderer.screenToWorld(screenPosition);
+        Decoration decoration = gameWorld.getDecoration(position);
+        if (decoration != null) {
+            ui.updateHoverInfo(decoration.getType().name());
+            return;
+        }
+        Site site = gameWorld.getSite(position);
+        if (site != null) {
+            ui.updateHoverInfo(site.getType().name());
+            return;
+        }
+        ui.updateHoverInfo(null);
     }
 
     // Keyboard

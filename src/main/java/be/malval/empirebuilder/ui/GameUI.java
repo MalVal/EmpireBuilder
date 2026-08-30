@@ -19,6 +19,7 @@ public class GameUI {
     private final ConstructionUI constructionUI;
     private final BuildingUI buildingUI;
     private StackPane pauseMenu;
+    private final Label hoverLabel;
 
     public GameUI(GameActionListener listener) {
         root = new StackPane();
@@ -39,11 +40,20 @@ public class GameUI {
         );
         StackPane.setMargin(
                 buildingUI.getRoot(),
-                new Insets(70, 15, 15, 15)
+                new Insets(80, 15, 15, 15)
         );
         root.getChildren().add(buildingUI.getRoot());
         buildingUI.getRoot().setVisible(false);
         buildingUI.getRoot().setPickOnBounds(true);
+        // Hover
+        hoverLabel = new Label();
+        hoverLabel.getStyleClass().add("hover-info");
+        hoverLabel.setVisible(false);
+        StackPane centerWrapper = new StackPane(hoverLabel);
+        centerWrapper.setPickOnBounds(false);
+        StackPane.setAlignment(hoverLabel, Pos.TOP_LEFT);
+        StackPane.setMargin(hoverLabel, new Insets(15, 0, 0, 15));
+        uiContainer.setCenter(centerWrapper);
     }
 
     // Show methods
@@ -100,6 +110,15 @@ public class GameUI {
             root.getChildren().remove(pauseMenu);
             pauseMenu = null;
         }
+    }
+
+    public void updateHoverInfo(String text) {
+        if (text == null) {
+            hoverLabel.setVisible(false);
+            return;
+        }
+        hoverLabel.setText(text);
+        hoverLabel.setVisible(true);
     }
 
     // GETTERS

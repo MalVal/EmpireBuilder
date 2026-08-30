@@ -9,12 +9,15 @@ import be.malval.empirebuilder.model.placeable.decoration.Decoration;
 import be.malval.empirebuilder.model.placeable.site.Site;
 import be.malval.empirebuilder.model.world.WorldChunk;
 import javafx.geometry.Point2D;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 
+import java.util.Objects;
 import java.util.function.Consumer;
 
 public class GameRenderer {
@@ -25,7 +28,71 @@ public class GameRenderer {
     private final Rectangle placementPreview;
     private Point2D mousePosition;
 
+    // Images
+    private final Image treeImage;
+    private final Image rockImage;
+    private final Image goldRockImage;
+    private final Image forestImage;
+    private final Image impureStoneQuaryImage;
+    private final Image normalStoneQuaryImage;
+    private final Image pureStoneQuaryImage;
+    private final Image impureGoldQuaryImage;
+    private final Image normalGoldQuaryImage;
+    private final Image pureGoldQuaryImage;
+
     public GameRenderer(GameWorld gameWorld) {
+        // Images
+        treeImage = new Image(
+                Objects.requireNonNull(
+                        getClass().getResourceAsStream("/img/little-tree.png")
+                )
+        );
+        rockImage = new Image(
+                Objects.requireNonNull(
+                        getClass().getResourceAsStream("/img/rocks.png")
+                )
+        );
+        goldRockImage = new Image(
+                Objects.requireNonNull(
+                        getClass().getResourceAsStream("/img/gold-rocks.png")
+                )
+        );
+        forestImage = new Image(
+                Objects.requireNonNull(
+                        getClass().getResourceAsStream("/img/forest.png")
+                )
+        );
+        impureStoneQuaryImage = new Image(
+                Objects.requireNonNull(
+                        getClass().getResourceAsStream("/img/impure-stone-quary.png")
+                )
+        );
+        normalStoneQuaryImage = new Image(
+                Objects.requireNonNull(
+                        getClass().getResourceAsStream("/img/normal-stone-quary.png")
+                )
+        );
+        pureStoneQuaryImage = new Image(
+                Objects.requireNonNull(
+                        getClass().getResourceAsStream("/img/pure-stone-quary.png")
+                )
+        );
+        impureGoldQuaryImage = new Image(
+                Objects.requireNonNull(
+                        getClass().getResourceAsStream("/img/impure-gold-quary.png")
+                )
+        );
+        normalGoldQuaryImage = new Image(
+                Objects.requireNonNull(
+                        getClass().getResourceAsStream("/img/normal-gold-quary.png")
+                )
+        );
+        pureGoldQuaryImage = new Image(
+                Objects.requireNonNull(
+                        getClass().getResourceAsStream("/img/pure-gold-quary.png")
+                )
+        );
+        // GUI
         root = new Pane();
         root.setStyle("-fx-background-color: #5c8f45;");
         // The model of the game
@@ -182,25 +249,28 @@ public class GameRenderer {
         GridPosition position = decoration.getPosition();
         double screenX = position.x() * TILE_SIZE - camera.getX();
         double screenY = position.y() * TILE_SIZE - camera.getY();
-        Rectangle rectangle = new Rectangle(
-                screenX,
-                screenY,
-                TILE_SIZE,
-                TILE_SIZE
-        );
+        Image image = null;
         switch (decoration.getType()) {
-            case TREE -> rectangle.setFill(Color.DARKGREEN);
-            case ROCK -> rectangle.setFill(Color.LIGHTGRAY);
-            case GOLD_ROCK ->  rectangle.setFill(Color.GOLD);
+            case TREE -> image = treeImage;
+            case ROCK -> image = rockImage;
+            case GOLD_ROCK -> image = goldRockImage;
         }
-        root.getChildren().add(rectangle);
-        // Draw the durability
-        if (decoration.getDurability() < decoration.getType().getMaxDurability()) {
-            Text durabilityText = new Text(decoration.getDurability() + " / " + decoration.getType().getMaxDurability());
-            durabilityText.setFill(Color.WHITE);
-            durabilityText.setX(screenX + 5);
-            durabilityText.setY(screenY + 20);
-            root.getChildren().add(durabilityText);
+        if(image != null) {
+            // Draw the image
+            ImageView imageView = new ImageView(image);
+            imageView.setX(screenX);
+            imageView.setY(screenY);
+            imageView.setFitWidth(TILE_SIZE);
+            imageView.setFitHeight(TILE_SIZE);
+            root.getChildren().add(imageView);
+            // Draw the durability
+            if (decoration.getDurability() < decoration.getType().getMaxDurability()) {
+                Text durabilityText = new Text(decoration.getDurability() + " / " + decoration.getType().getMaxDurability());
+                durabilityText.setFill(Color.WHITE);
+                durabilityText.setX(screenX + 5);
+                durabilityText.setY(screenY + 20);
+                root.getChildren().add(durabilityText);
+            }
         }
     }
 
@@ -208,22 +278,24 @@ public class GameRenderer {
         GridPosition position = site.getPosition();
         double screenX = position.x() * TILE_SIZE - camera.getX();
         double screenY = position.y() * TILE_SIZE - camera.getY();
-        Rectangle rectangle = new Rectangle(
-                screenX,
-                screenY,
-                TILE_SIZE,
-                TILE_SIZE
-        );
+        Image image = null;
         switch (site.getType()) {
-            case FOREST -> rectangle.setFill(Color.LIGHTGREEN);
-            case STONE_QUARY_IMPURE -> rectangle.setFill(Color.BLACK);
-            case STONE_QUARY_NORMAL ->  rectangle.setFill(Color.GRAY);
-            case STONE_QUARY_PURE ->  rectangle.setFill(Color.DARKGRAY);
-            case GOLD_QUARY_IMPURE ->  rectangle.setFill(Color.PURPLE);
-            case GOLD_QUARY_NORMAL ->  rectangle.setFill(Color.CYAN);
-            case GOLD_QUARY_PURE ->  rectangle.setFill(Color.WHITE);
+            case FOREST ->  image = forestImage;
+            case STONE_QUARY_IMPURE -> image = impureStoneQuaryImage;
+            case STONE_QUARY_NORMAL ->  image = normalStoneQuaryImage;
+            case STONE_QUARY_PURE -> image = pureStoneQuaryImage;
+            case GOLD_QUARY_IMPURE ->  image = impureGoldQuaryImage;
+            case GOLD_QUARY_PURE ->   image = normalGoldQuaryImage;
+            case GOLD_QUARY_NORMAL ->  image = pureGoldQuaryImage;
         }
-        root.getChildren().add(rectangle);
+        if(image != null) {
+            ImageView imageView = new ImageView(image);
+            imageView.setX(screenX);
+            imageView.setY(screenY);
+            imageView.setFitWidth(TILE_SIZE);
+            imageView.setFitHeight(TILE_SIZE);
+            root.getChildren().add(imageView);
+        }
     }
 
     private void drawPlayer() {

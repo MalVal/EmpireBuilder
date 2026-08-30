@@ -23,6 +23,10 @@ public class Building implements Placeable {
         productionTimer -= deltaTime;
     }
 
+    public void levelUp() {
+        level++;
+    }
+
     public boolean isProductionReady() {
         return productionTimer <= 0;
     }
