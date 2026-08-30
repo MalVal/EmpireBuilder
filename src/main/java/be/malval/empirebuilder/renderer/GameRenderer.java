@@ -131,6 +131,7 @@ public class GameRenderer {
             case HOUSE -> rectangle.setFill(Color.BLUE);
             case WOODCUTTER -> rectangle.setFill(Color.BURLYWOOD);
             case MINE -> rectangle.setFill(Color.DARKGRAY);
+            case GOLD_MINE ->  rectangle.setFill(Color.ORANGE);
             case FIELD ->  rectangle.setFill(Color.YELLOW);
             case STORAGE -> rectangle.setFill(Color.GREEN);
         }

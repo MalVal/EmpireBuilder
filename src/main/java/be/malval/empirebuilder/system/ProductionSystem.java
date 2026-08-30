@@ -4,6 +4,7 @@ import be.malval.empirebuilder.model.GameWorld;
 import be.malval.empirebuilder.model.Resource.ResourceType;
 import be.malval.empirebuilder.model.placeable.Placeable;
 import be.malval.empirebuilder.model.placeable.building.Building;
+import be.malval.empirebuilder.model.placeable.site.Site;
 
 public class ProductionSystem {
     public void update(GameWorld gameWorld, double deltaTime) {
@@ -25,6 +26,20 @@ public class ProductionSystem {
     private void produce(GameWorld gameWorld, Building building) {
         ResourceType resource = building.getType().getResourceType();
         int amount = building.getType().getProductionAmount();
+        // If the building required a site
+        if(building.getType().isRequiredSite()) {
+            Site site = gameWorld.getSite(building.getPosition());
+            // If the site is destroyed
+            if(site == null) {
+                return;
+            }
+            if(!site.removeResource(amount)) {
+                // Destroy the site when no resource
+                gameWorld.getWorldState().destroy(site.getPosition());
+                return;
+            }
+        }
+        // Add the resources to the player
         gameWorld.getResourceStock().add(resource, amount);
     }
 }

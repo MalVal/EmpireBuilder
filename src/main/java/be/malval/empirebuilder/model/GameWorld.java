@@ -2,7 +2,9 @@ package be.malval.empirebuilder.model;
 
 import be.malval.empirebuilder.model.Resource.ResourceStock;
 import be.malval.empirebuilder.model.placeable.Placeable;
+import be.malval.empirebuilder.model.placeable.building.Building;
 import be.malval.empirebuilder.model.placeable.decoration.Decoration;
+import be.malval.empirebuilder.model.placeable.site.Site;
 import be.malval.empirebuilder.model.world.WorldChunk;
 import be.malval.empirebuilder.model.world.WorldState;
 import be.malval.empirebuilder.system.GameTime;
@@ -82,27 +84,57 @@ public class GameWorld {
     }
 
     public Placeable getPlaceable(GridPosition position) {
-        int chunkX = Math.floorDiv(position.x(), WorldChunk.SIZE);
-        int chunkY = Math.floorDiv(position.y(), WorldChunk.SIZE);
-        WorldChunk chunk = getChunk(chunkX, chunkY);
-        for (Placeable placeable : chunk.getPlaceables()) {
+        // Building
+        for(Placeable placeable : worldState.getPlaceables()) {
             if (placeable.getPosition().equals(position)) {
                 return placeable;
             }
         }
-        for(Placeable placeable : worldState.getPlaceables()) {
-            if (placeable.getPosition().equals(position)) {
+        // Decorations and Sites
+        int chunkX = Math.floorDiv(position.x(), WorldChunk.SIZE);
+        int chunkY = Math.floorDiv(position.y(), WorldChunk.SIZE);
+        WorldChunk chunk = getChunk(chunkX, chunkY);
+        for (Placeable placeable : chunk.getPlaceables()) {
+            if (placeable.getPosition().equals(position) && !worldState.isDestroyed(position)) {
                 return placeable;
             }
         }
         return null;
     }
 
+    public Building getBuilding(GridPosition position) {
+        for(Placeable placeable : worldState.getPlaceables()) {
+            if (placeable.getPosition().equals(position) && placeable instanceof Building building) {
+                return building;
+            }
+        }
+        return null;
+    }
+
     public Decoration getDecoration(GridPosition position) {
-        Placeable placeable = getPlaceable(position);
-        if (placeable instanceof Decoration decoration
-                && !worldState.isDestroyed(position)) {
-            return decoration;
+        int chunkX = Math.floorDiv(position.x(), WorldChunk.SIZE);
+        int chunkY = Math.floorDiv(position.y(), WorldChunk.SIZE);
+        WorldChunk chunk = getChunk(chunkX, chunkY);
+        for (Placeable placeable : chunk.getPlaceables()) {
+            if (placeable.getPosition().equals(position) && !worldState.isDestroyed(position)) {
+                if (placeable instanceof Decoration decoration) {
+                    return decoration;
+                }
+            }
+        }
+        return null;
+    }
+
+    public Site getSite(GridPosition position) {
+        int chunkX = Math.floorDiv(position.x(), WorldChunk.SIZE);
+        int chunkY = Math.floorDiv(position.y(), WorldChunk.SIZE);
+        WorldChunk chunk = getChunk(chunkX, chunkY);
+        for (Placeable placeable : chunk.getPlaceables()) {
+            if (placeable.getPosition().equals(position) && !worldState.isDestroyed(position)) {
+                if (placeable instanceof Site site) {
+                    return site;
+                }
+            }
         }
         return null;
     }

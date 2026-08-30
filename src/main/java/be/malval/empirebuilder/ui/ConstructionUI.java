@@ -69,6 +69,12 @@ public class ConstructionUI {
                         BuildingType.MINE,
                         listener
                 );
+        Button goldMineButton =
+                createBuildingButton(
+                        "Mine d'or",
+                        BuildingType.GOLD_MINE,
+                        listener
+                );
         Button fieldButton =
                 createBuildingButton(
                         "Champ",
@@ -93,6 +99,7 @@ public class ConstructionUI {
                 houseButton,
                 woodcutterButton,
                 mineButton,
+                goldMineButton,
                 fieldButton,
                 storageButton,
                 backButton

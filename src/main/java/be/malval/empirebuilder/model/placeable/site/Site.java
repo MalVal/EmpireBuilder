@@ -15,8 +15,8 @@ public class Site implements Placeable {
     }
 
     public boolean removeResource(int amount) {
-        if(this.storage - amount >= 0) {
-            this.storage -= amount;
+        if(this.storage - (int) type.getEfficiency() * amount >= 0) {
+            this.storage -= (int) type.getEfficiency() * amount;
             return true;
         }
         return false;

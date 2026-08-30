@@ -8,6 +8,7 @@ import be.malval.empirebuilder.model.placeable.Placeable;
 import be.malval.empirebuilder.model.placeable.building.Building;
 import be.malval.empirebuilder.model.placeable.building.BuildingType;
 import be.malval.empirebuilder.model.placeable.decoration.Decoration;
+import be.malval.empirebuilder.model.placeable.site.Site;
 import be.malval.empirebuilder.renderer.GameRenderer;
 import be.malval.empirebuilder.system.ProductionSystem;
 import be.malval.empirebuilder.ui.GameUI;
@@ -98,8 +99,8 @@ public class Game implements GameActionListener {
         }
 
         // Click on a building
-        Placeable placeable = gameWorld.getPlaceable(position);
-        if (placeable instanceof Building building) {
+        Building building = gameWorld.getBuilding(position);
+        if (building != null) {
             ui.showBuilding(building);
             return;
         }
@@ -113,19 +114,43 @@ public class Game implements GameActionListener {
     }
 
     private void placeBuilding(GridPosition position) {
-        if (gameWorld.isOccupied(position)) {
-            ui.showMessage("Pas assez de place !");
+        if (!canPlaceBuilding(position)) {
             return;
         }
         Building building = new Building(
                 position,
                 selectedBuildingType
         );
-        if(gameWorld.getResourceStock().remove(selectedBuildingType)) {
-            gameWorld.getWorldState().addPlaceable(building);
+        if (!gameWorld.getResourceStock().remove(selectedBuildingType)) {
+            ui.showMessage("Pas assez de ressources !");
+            return;
         }
+        gameWorld.getWorldState().addPlaceable(building);
         placementMode = false;
         selectedBuildingType = null;
+    }
+
+    private boolean canPlaceBuilding(GridPosition position) {
+        // Buildings that don't require a resource site
+        if (!selectedBuildingType.isRequiredSite()) {
+            if (gameWorld.isOccupied(position)) {
+                ui.showMessage("Pas assez de place !");
+                return false;
+            }
+            return true;
+        }
+        // Buildings that require a resource site
+        Site site = gameWorld.getSite(position);
+        if (site == null) {
+            ui.showMessage("Vous ne pouvez pas placer ce bâtiment ici !");
+            return false;
+        }
+        ResourceType resourceType = site.getType().getResourceType();
+        if (resourceType != selectedBuildingType.getResourceType()) {
+            ui.showMessage("Ce bâtiment doit être placé sur un site adapté !");
+            return false;
+        }
+        return true;
     }
 
     private void hitDecoration(Decoration decoration) {
