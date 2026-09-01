@@ -19,6 +19,7 @@ public enum BuildingType {
     private final double productionTime;
     private final List<ResourceCost> costs;
     private final boolean requiredSite;
+    private final int upKeepFee;
 
     BuildingType(BuildingConfig.BuildingData data) {
         this.resourceType = data.resourceType();
@@ -26,6 +27,7 @@ public enum BuildingType {
         this.productionTime = data.productionTime();
         this.costs = data.costs();
         this.requiredSite = data.requiredSite();
+        this.upKeepFee = data.upKeepFee();
     }
 
     public ResourceType getResourceType() {
@@ -46,5 +48,9 @@ public enum BuildingType {
 
     public boolean isRequiredSite() {
         return requiredSite;
+    }
+
+    public int getUpKeepFee() {
+        return upKeepFee;
     }
 }

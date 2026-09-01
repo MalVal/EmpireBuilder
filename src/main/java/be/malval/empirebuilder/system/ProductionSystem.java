@@ -26,7 +26,13 @@ public class ProductionSystem {
 
     private void produce(GameWorld gameWorld, Building building) {
         ResourceType resource = building.getType().getResourceType();
-        // Level multiplier
+        // Up keep fee
+        int upKeepFee = (int) (LevelConfig.getMultiplier(building.getLevel()) * building.getType().getUpKeepFee());
+        if(!(gameWorld.getResourceStock().getGold() >= upKeepFee)) {
+            return;
+        }
+        gameWorld.getResourceStock().remove(ResourceType.GOLD,  upKeepFee);
+        // Amount
         int amount = (int) (building.getType().getProductionAmount() * LevelConfig.getMultiplier(building.getLevel()));
         // If the building required a site
         if(building.getType().isRequiredSite()) {

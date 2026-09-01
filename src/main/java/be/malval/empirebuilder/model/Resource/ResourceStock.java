@@ -28,6 +28,34 @@ public class ResourceStock {
         }
     }
 
+    public boolean remove(ResourceType resourceType, int amount) {
+        switch (resourceType) {
+            case WOOD:
+                if(wood - amount < 0)
+                    return false;
+                wood -= amount;
+                break;
+            case STONE:
+                if(stone - amount < 0)
+                    return false;
+                stone -= amount;
+                break;
+            case WHEAT:
+                if(wheat - amount < 0)
+                    return false;
+                wheat -= amount;
+                break;
+            case GOLD:
+                if(gold - amount < 0)
+                    return false;
+                gold -= amount;
+                break;
+            default:
+                return false;
+        }
+        return true;
+    }
+
     public boolean remove(BuildingType buildingType) {
         for (ResourceCost resourceCost : buildingType.getCosts()) {
             switch (resourceCost.type()) {
