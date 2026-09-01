@@ -27,7 +27,7 @@ public class GameWorld {
     public GameWorld() {
         player = new Player(10 * 64, 5 * 64);
         worldState = new WorldState();
-        resourceStock = new ResourceStock();
+        resourceStock = new ResourceStock(100, 100, 100, 100);
         seed = 12345L;
         chunks = new HashMap<>();
         gameTime = new GameTime();

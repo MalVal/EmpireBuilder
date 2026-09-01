@@ -16,8 +16,10 @@ public class BuildingController implements BuildingActionListener {
 
     @Override
     public void onBuildingUpgrade(Building building) {
-        building.levelUp();
-        ui.showBuilding(building);
+        if(building.getLevel() < 10) {
+            building.levelUp();
+            ui.showBuilding(building, gameWorld);
+        }
     }
 
     @Override

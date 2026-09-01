@@ -8,6 +8,13 @@ public class ResourceStock {
     private int wheat;
     private int gold;
 
+    public ResourceStock(int wood, int stone, int wheat, int gold) {
+        this.wood = wood;
+        this.stone = stone;
+        this.wheat = wheat;
+        this.gold = gold;
+    }
+
     // Add
     public void add(ResourceType resourceType, int amount) {
         switch (resourceType) {

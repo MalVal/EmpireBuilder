@@ -98,7 +98,7 @@ public class Game implements GameActionListener {
         // Click on a building
         Building building = gameWorld.getBuilding(position);
         if (building != null) {
-            ui.showBuilding(building);
+            ui.showBuilding(building, gameWorld);
             return;
         }
         ui.hideBuilding();

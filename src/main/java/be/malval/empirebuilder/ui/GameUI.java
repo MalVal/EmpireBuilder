@@ -2,6 +2,7 @@ package be.malval.empirebuilder.ui;
 
 import be.malval.empirebuilder.controller.BuildingActionListener;
 import be.malval.empirebuilder.controller.GameActionListener;
+import be.malval.empirebuilder.model.GameWorld;
 import be.malval.empirebuilder.model.placeable.building.Building;
 import javafx.animation.PauseTransition;
 import javafx.geometry.Insets;
@@ -78,8 +79,8 @@ public class GameUI {
         pause.play();
     }
 
-    public void showBuilding(Building building) {
-        buildingUI.show(building);
+    public void showBuilding(Building building, GameWorld gameWorld) {
+        buildingUI.show(building, gameWorld);
         buildingUI.getRoot().setVisible(true);
     }
 
