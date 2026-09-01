@@ -2,7 +2,6 @@ package be.malval.empirebuilder.controller;
 
 import be.malval.empirebuilder.model.GameWorld;
 import be.malval.empirebuilder.model.GridPosition;
-import be.malval.empirebuilder.model.Resource.ResourceCost;
 import be.malval.empirebuilder.model.Resource.ResourceType;
 import be.malval.empirebuilder.model.placeable.building.Building;
 import be.malval.empirebuilder.model.placeable.building.BuildingType;
@@ -19,6 +18,9 @@ import javafx.scene.Scene;
 import javafx.scene.layout.StackPane;
 
 public class Game implements GameActionListener {
+    // Controllers
+    private final BuildingActionListener buildingActionListener;
+
     // Models
     private final GameWorld gameWorld;
 
@@ -56,6 +58,9 @@ public class Game implements GameActionListener {
         ui = new GameUI(this);
         gameRoot = new StackPane();
         gameRoot.getChildren().addAll( renderer.getRoot(), ui.getRoot() );
+        // Controllers
+        buildingActionListener = new BuildingController(gameWorld, ui);
+        ui.setBuildingActionListener(buildingActionListener);
         // System
         productionSystem = new ProductionSystem();
     }
@@ -76,18 +81,8 @@ public class Game implements GameActionListener {
     }
 
     @Override
-    public void onBuildingUpgrade(Building building) {
-        building.levelUp();
-        ui.showBuilding(building);
-    }
-
-    @Override
-    public void onBuildingDestroy(Building building) {
-        ui.hideBuilding();
-        for(ResourceCost resourceCost : building.getType().getCosts()) {
-            gameWorld.getResourceStock().add(resourceCost.type(), (int) (0.5 * resourceCost.amount()));
-        }
-        gameWorld.getWorldState().removePlaceable(building);
+    public BuildingActionListener getBuildingActionListener() {
+        return buildingActionListener;
     }
 
     // Events

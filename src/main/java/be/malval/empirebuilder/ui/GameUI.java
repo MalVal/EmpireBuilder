@@ -1,5 +1,6 @@
 package be.malval.empirebuilder.ui;
 
+import be.malval.empirebuilder.controller.BuildingActionListener;
 import be.malval.empirebuilder.controller.GameActionListener;
 import be.malval.empirebuilder.model.placeable.building.Building;
 import javafx.animation.PauseTransition;
@@ -33,7 +34,7 @@ public class GameUI {
         root.getChildren().add(uiContainer);
         resourceBar.getRoot().setMouseTransparent(true);
         // Building GUI
-        buildingUI = new BuildingUI(listener);
+        buildingUI = new BuildingUI();
         StackPane.setAlignment(
                 buildingUI.getRoot(),
                 Pos.TOP_RIGHT
@@ -54,6 +55,10 @@ public class GameUI {
         StackPane.setAlignment(hoverLabel, Pos.TOP_LEFT);
         StackPane.setMargin(hoverLabel, new Insets(15, 0, 0, 15));
         uiContainer.setCenter(centerWrapper);
+    }
+
+    public void setBuildingActionListener(BuildingActionListener listener) {
+        buildingUI.setBuildingActionListener(listener);
     }
 
     // Show methods

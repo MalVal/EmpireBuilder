@@ -1,6 +1,6 @@
 package be.malval.empirebuilder.ui;
 
-import be.malval.empirebuilder.controller.GameActionListener;
+import be.malval.empirebuilder.controller.BuildingActionListener;
 import be.malval.empirebuilder.model.placeable.building.Building;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -13,9 +13,11 @@ public class BuildingUI {
     private final Label nameLabel;
     private final Label levelLabel;
     private final Label productionLabel;
+    private final Button upgradeButton;
+    private final Button destroyButton;
     private Building currentBuilding;
 
-    public BuildingUI(GameActionListener listener) {
+    public BuildingUI() {
         root = new VBox(8);
         root.setAlignment(Pos.CENTER);
         root.setPadding(new Insets(12));
@@ -30,16 +32,10 @@ public class BuildingUI {
         nameLabel.getStyleClass().add("building-name");
         levelLabel.getStyleClass().add("building-stat");
         productionLabel.getStyleClass().add("building-stat");
-        Button upgradeButton = new Button("Améliorer");
+        upgradeButton = new Button("Améliorer");
         upgradeButton.setMaxWidth(Double.MAX_VALUE);
-        upgradeButton.setOnAction(event ->
-                listener.onBuildingUpgrade(currentBuilding)
-        );
-        Button destroyButton = new Button("Détruire");
+        destroyButton = new Button("Détruire");
         destroyButton.setMaxWidth(Double.MAX_VALUE);
-        destroyButton.setOnAction(event ->
-                listener.onBuildingDestroy(currentBuilding)
-        );
         root.getChildren().addAll(
                 nameLabel,
                 levelLabel,
@@ -49,6 +45,7 @@ public class BuildingUI {
         );
     }
 
+    // Show methods
     public void show(Building building) {
         currentBuilding = building;
         nameLabel.setText(
@@ -62,6 +59,17 @@ public class BuildingUI {
         );
     }
 
+    // SETTERS
+    public void setBuildingActionListener(BuildingActionListener listener) {
+        upgradeButton.setOnAction(event ->
+                listener.onBuildingUpgrade(currentBuilding)
+        );
+        destroyButton.setOnAction(event ->
+                listener.onBuildingDestroy(currentBuilding)
+        );
+    }
+
+    // GETTERS
     public VBox getRoot() {
         return root;
     }
