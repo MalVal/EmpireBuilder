@@ -8,6 +8,7 @@ import be.malval.empirebuilder.model.placeable.building.Building;
 import be.malval.empirebuilder.model.placeable.building.BuildingType;
 import be.malval.empirebuilder.model.placeable.decoration.Decoration;
 import be.malval.empirebuilder.model.placeable.site.Site;
+import be.malval.empirebuilder.model.player.PlayerDirection;
 import be.malval.empirebuilder.renderer.GameRenderer;
 import be.malval.empirebuilder.system.ProductionSystem;
 import be.malval.empirebuilder.ui.GameUI;
@@ -215,15 +216,19 @@ public class Game implements GameActionListener {
         double dy = 0;
         if (up) {
             dy -= speed;
+            gameWorld.getPlayer().setPlayerDirection(PlayerDirection.UP);
         }
         if (down) {
             dy += speed;
+            gameWorld.getPlayer().setPlayerDirection(PlayerDirection.DOWN);
         }
         if (left) {
             dx -= speed;
+            gameWorld.getPlayer().setPlayerDirection(PlayerDirection.LEFT);
         }
         if (right) {
             dx += speed;
+            gameWorld.getPlayer().setPlayerDirection(PlayerDirection.RIGHT);
         }
         gameWorld.getPlayer().move(dx, dy);
         renderer.updateCamera();

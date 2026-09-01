@@ -2,13 +2,15 @@ package be.malval.empirebuilder.renderer;
 
 import be.malval.empirebuilder.model.GameWorld;
 import be.malval.empirebuilder.model.GridPosition;
-import be.malval.empirebuilder.model.Player;
+import be.malval.empirebuilder.model.player.Player;
 import be.malval.empirebuilder.model.placeable.Placeable;
 import be.malval.empirebuilder.model.placeable.building.Building;
 import be.malval.empirebuilder.model.placeable.decoration.Decoration;
 import be.malval.empirebuilder.model.placeable.site.Site;
+import be.malval.empirebuilder.model.player.PlayerDirection;
 import be.malval.empirebuilder.model.world.WorldChunk;
 import javafx.geometry.Point2D;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
@@ -39,6 +41,8 @@ public class GameRenderer {
     private final Image impureGoldQuaryImage;
     private final Image normalGoldQuaryImage;
     private final Image pureGoldQuaryImage;
+    private final Image playerSprite;
+    private final ImageView playerImage;
 
     public GameRenderer(GameWorld gameWorld) {
         // Images
@@ -92,6 +96,14 @@ public class GameRenderer {
                         getClass().getResourceAsStream("/img/pure-gold-quary.png")
                 )
         );
+
+        playerSprite = new Image(
+                getClass().getResourceAsStream("/img/player.png")
+        );
+        playerImage = new ImageView(playerSprite);
+        playerImage.setFitWidth(TILE_SIZE);
+        playerImage.setFitHeight(TILE_SIZE);
+
         // GUI
         root = new Pane();
         root.setStyle("-fx-background-color: #5c8f45;");
@@ -298,18 +310,31 @@ public class GameRenderer {
         }
     }
 
-    private void drawPlayer() {
+    private void setPlayerFrame(int column, int row) {
+        playerImage.setViewport(
+                new Rectangle2D(
+                        column * 32,
+                        row * 32,
+                        32,
+                        32
+                )
+        );
+    }
+
+    public void drawPlayer() {
         Player player = gameWorld.getPlayer();
         double screenX = player.getX() - camera.getX() - 20;
         double screenY = player.getY() - camera.getY() - 20;
-        Rectangle playerRectangle = new Rectangle(
-                screenX,
-                screenY,
-                40,
-                40
-        );
-        playerRectangle.setFill(Color.ORANGE);
-        root.getChildren().add(playerRectangle);
+        playerImage.setLayoutX(screenX);
+        playerImage.setLayoutY(screenY);
+        int row = switch (player.getPlayerDirection()) {
+            case DOWN -> 0;
+            case LEFT -> 1;
+            case RIGHT -> 2;
+            case UP -> 3;
+        };
+        setPlayerFrame(1, row);
+        root.getChildren().add(playerImage);
     }
 
     // Update the preview of construction
@@ -362,6 +387,12 @@ public class GameRenderer {
         int gridX = (int) Math.floor(worldX / TILE_SIZE);
         int gridY = (int) Math.floor(worldY / TILE_SIZE);
         return new GridPosition(gridX, gridY);
+    }
+
+    public Point2D worldToScreen(GridPosition position) {
+        double screenX = position.x() * TILE_SIZE - camera.getX();
+        double screenY = position.y() * TILE_SIZE - camera.getY();
+        return new Point2D(screenX, screenY);
     }
 
     public void updateCamera() {

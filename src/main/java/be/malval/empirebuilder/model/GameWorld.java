@@ -5,6 +5,7 @@ import be.malval.empirebuilder.model.placeable.Placeable;
 import be.malval.empirebuilder.model.placeable.building.Building;
 import be.malval.empirebuilder.model.placeable.decoration.Decoration;
 import be.malval.empirebuilder.model.placeable.site.Site;
+import be.malval.empirebuilder.model.player.Player;
 import be.malval.empirebuilder.model.world.WorldChunk;
 import be.malval.empirebuilder.model.world.WorldState;
 import be.malval.empirebuilder.system.GameTime;

@@ -1,0 +1,120 @@
+{
+    "STORAGE": {
+        "costs": [
+            {
+                "amount": 20,
+                "type": "WOOD"
+            },
+            {
+                "amount": 10,
+                "type": "STONE"
+            }
+        ],
+        "productionAmount": 0,
+        "upKeepFee": 1,
+        "productionTime": 0,
+        "requiredSite": false,
+        "resourceType": null
+    },
+    "FIELD": {
+        "costs": [
+            {
+                "amount": 20,
+                "type": "WOOD"
+            },
+            {
+                "amount": 10,
+                "type": "STONE"
+            }
+        ],
+        "productionAmount": 15,
+        "upKeepFee": 1,
+        "productionTime": 6,
+        "requiredSite": false,
+        "resourceType": "WHEAT"
+    },
+    "MINE": {
+        "costs": [
+            {
+                "amount": 20,
+                "type": "WOOD"
+            },
+            {
+                "amount": 10,
+                "type": "STONE"
+            },
+            {
+                "amount": 10,
+                "type": "WHEAT"
+            }
+        ],
+        "productionAmount": 5,
+        "upKeepFee": 1,
+        "productionTime": 8,
+        "requiredSite": true,
+        "resourceType": "STONE"
+    },
+    "HOUSE": {
+        "costs": [
+            {
+                "amount": 20,
+                "type": "WOOD"
+            },
+            {
+                "amount": 10,
+                "type": "STONE"
+            },
+            {
+                "amount": 10,
+                "type": "WHEAT"
+            }
+        ],
+        "productionAmount": 0,
+        "upKeepFee": 1,
+        "productionTime": 0,
+        "requiredSite": false,
+        "resourceType": null
+    },
+    "GOLD_MINE": {
+        "costs": [
+            {
+                "amount": 20,
+                "type": "WOOD"
+            },
+            {
+                "amount": 10,
+                "type": "STONE"
+            },
+            {
+                "amount": 10,
+                "type": "WHEAT"
+            }
+        ],
+        "productionAmount": 5,
+        "upKeepFee": 1,
+        "productionTime": 8,
+        "requiredSite": true,
+        "resourceType": "GOLD"
+    },
+    "WOODCUTTER": {
+        "costs": [
+            {
+                "amount": 50,
+                "type": "WOOD"
+            },
+            {
+                "amount": 20,
+                "type": "STONE"
+            },
+            {
+                "amount": 10,
+                "type": "WHEAT"
+            }
+        ],
+        "productionAmount": 10,
+        "upKeepFee": 1,
+        "productionTime": 5,
+        "requiredSite": true,
+        "resourceType": "WOOD"
+    }
+}
