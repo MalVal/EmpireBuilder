@@ -20,6 +20,7 @@ import javafx.scene.layout.StackPane;
 public class Game implements GameActionListener {
     // Controllers
     private final BuildingActionListener buildingActionListener;
+    private final ConstructionUiActionListener constructionUiActionListener;
 
     // Models
     private final GameWorld gameWorld;
@@ -61,28 +62,25 @@ public class Game implements GameActionListener {
         // Controllers
         buildingActionListener = new BuildingController(gameWorld, ui);
         ui.setBuildingActionListener(buildingActionListener);
+        constructionUiActionListener = new ConstructionUiController(this, ui);
+        ui.setConstructionUiActionListener(constructionUiActionListener);
         // System
         productionSystem = new ProductionSystem();
     }
 
     @Override
-    public void onBuildClicked() {
-        ui.getConstructionUI().showBuildMenu(this);
-    }
-
-    @Override
-    public void onBuildingSelected(BuildingType type) {
-        if (!gameWorld.getResourceStock().canAfford(type)) {
-            ui.showMessage("Pas assez de ressources !");
-            return;
-        }
-        selectedBuildingType = type;
-        placementMode = true;
+    public GameWorld getGameWorld() {
+        return gameWorld;
     }
 
     @Override
     public BuildingActionListener getBuildingActionListener() {
         return buildingActionListener;
+    }
+
+    @Override
+    public ConstructionUiActionListener getConstructionUiActionListener() {
+        return constructionUiActionListener;
     }
 
     // Events
@@ -299,5 +297,26 @@ public class Game implements GameActionListener {
     // GETTERS
     public StackPane getRoot() {
         return gameRoot;
+    }
+
+    @Override
+    public boolean getPlacementMode() {
+        return placementMode;
+    }
+
+    @Override
+    public BuildingType getSelectedBuildingType() {
+        return selectedBuildingType;
+    }
+
+    // SETTERS
+    @Override
+    public void setPlacementMode(boolean placementMode) {
+        this.placementMode = placementMode;
+    }
+
+    @Override
+    public void setSelectedBuildingType(BuildingType selectedBuildingType) {
+        this.selectedBuildingType = selectedBuildingType;
     }
 }

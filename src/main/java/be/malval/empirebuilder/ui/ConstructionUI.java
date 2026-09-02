@@ -1,6 +1,6 @@
 package be.malval.empirebuilder.ui;
 
-import be.malval.empirebuilder.controller.GameActionListener;
+import be.malval.empirebuilder.controller.ConstructionUiActionListener;
 import be.malval.empirebuilder.model.Resource.ResourceCost;
 import be.malval.empirebuilder.model.Resource.ResourceType;
 import be.malval.empirebuilder.model.placeable.building.BuildingType;
@@ -15,15 +15,15 @@ import javafx.scene.layout.VBox;
 public class ConstructionUI {
     private final VBox root;
     private final HBox bottomBar;
+    private ConstructionUiActionListener listener;
 
-    public ConstructionUI(GameActionListener listener) {
+    public ConstructionUI() {
         root = new VBox();
         bottomBar = new HBox();
         bottomBar.setAlignment(Pos.CENTER);
         bottomBar.setPadding(new Insets(12));
         bottomBar.getStyleClass().add("bottom-bar");
         root.getChildren().add(bottomBar);
-        showMainMenu(listener);
     }
 
     private Button createMenuButton(String text, EventHandler<ActionEvent> action) {
@@ -38,7 +38,7 @@ public class ConstructionUI {
     }
 
     // Show methods
-    public void showMainMenu(GameActionListener listener) {
+    public void showMainMenu() {
         bottomBar.getChildren().clear();
         Button buildButton = createMenuButton(
                 "Construire",
@@ -49,49 +49,43 @@ public class ConstructionUI {
         );
     }
 
-    public void showBuildMenu(GameActionListener listener) {
+    public void showBuildMenu() {
         bottomBar.getChildren().clear();
         Button houseButton =
                 createBuildingButton(
                         "Maison",
-                        BuildingType.HOUSE,
-                        listener
+                        BuildingType.HOUSE
                 );
         Button woodcutterButton =
                 createBuildingButton(
                         "Scierie",
-                        BuildingType.WOODCUTTER,
-                        listener
+                        BuildingType.WOODCUTTER
                 );
         Button mineButton =
                 createBuildingButton(
                         "Mine",
-                        BuildingType.MINE,
-                        listener
+                        BuildingType.MINE
                 );
         Button goldMineButton =
                 createBuildingButton(
                         "Mine d'or",
-                        BuildingType.GOLD_MINE,
-                        listener
+                        BuildingType.GOLD_MINE
                 );
         Button fieldButton =
                 createBuildingButton(
                         "Champ",
-                        BuildingType.FIELD,
-                        listener
+                        BuildingType.FIELD
                 );
         Button storageButton =
                 createBuildingButton(
                         "Entrepôt",
-                        BuildingType.STORAGE,
-                        listener
+                        BuildingType.STORAGE
                 );
         Button backButton =
                 createMenuButton(
                         "Retour",
                         event -> {
-                            showMainMenu(listener);
+                            showMainMenu();
                         }
                 );
         backButton.getStyleClass().add("back-button");
@@ -106,7 +100,7 @@ public class ConstructionUI {
         );
     }
 
-    private Button createBuildingButton(String text, BuildingType type, GameActionListener listener) {
+    private Button createBuildingButton(String text, BuildingType type) {
         Button button = new Button();
         button.setText(
                 text + "\n" + formatCosts(type)
@@ -127,6 +121,12 @@ public class ConstructionUI {
                     .append("  ");
         }
         return text.toString().trim();
+    }
+
+    // SETTERS
+    public void setConstructionUiActionListener(ConstructionUiActionListener listener) {
+        this.listener = listener;
+        showMainMenu();
     }
 
     private String getResourceIcon(ResourceType type) {

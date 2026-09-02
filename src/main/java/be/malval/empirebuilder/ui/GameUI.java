@@ -1,6 +1,7 @@
 package be.malval.empirebuilder.ui;
 
 import be.malval.empirebuilder.controller.BuildingActionListener;
+import be.malval.empirebuilder.controller.ConstructionUiActionListener;
 import be.malval.empirebuilder.controller.GameActionListener;
 import be.malval.empirebuilder.model.GameWorld;
 import be.malval.empirebuilder.model.placeable.building.Building;
@@ -29,7 +30,8 @@ public class GameUI {
         BorderPane uiContainer = new BorderPane();
         uiContainer.setPickOnBounds(false);
         resourceBar = new ResourceBar();
-        constructionUI = new ConstructionUI(listener);
+        constructionUI = new ConstructionUI();
+        constructionUI.setConstructionUiActionListener(listener.getConstructionUiActionListener());
         uiContainer.setTop(resourceBar.getRoot());
         uiContainer.setBottom(constructionUI.getRoot());
         root.getChildren().add(uiContainer);
@@ -56,10 +58,6 @@ public class GameUI {
         StackPane.setAlignment(hoverLabel, Pos.TOP_LEFT);
         StackPane.setMargin(hoverLabel, new Insets(15, 0, 0, 15));
         uiContainer.setCenter(centerWrapper);
-    }
-
-    public void setBuildingActionListener(BuildingActionListener listener) {
-        buildingUI.setBuildingActionListener(listener);
     }
 
     // Show methods
@@ -125,6 +123,15 @@ public class GameUI {
         }
         hoverLabel.setText(text);
         hoverLabel.setVisible(true);
+    }
+
+    // SETTERS
+    public void setBuildingActionListener(BuildingActionListener listener) {
+        buildingUI.setBuildingActionListener(listener);
+    }
+
+    public void setConstructionUiActionListener(ConstructionUiActionListener listener) {
+        constructionUI.setConstructionUiActionListener(listener);
     }
 
     // GETTERS
