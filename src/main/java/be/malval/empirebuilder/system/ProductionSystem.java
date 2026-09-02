@@ -38,7 +38,6 @@ public class ProductionSystem {
         if(!(gameWorld.getResourceStock().getGold() >= upKeepFee)) {
             return;
         }
-        gameWorld.getResourceStock().remove(ResourceType.GOLD,  upKeepFee);
         // Amount
         int amount = (int) (building.getType().getProductionAmount() * LevelConfig.getMultiplier(building.getLevel()));
         // If the building required a site
@@ -60,6 +59,8 @@ public class ProductionSystem {
                 buildingUI.show(building, gameWorld);
             }
         }
+        // Remove the production cost
+        gameWorld.getResourceStock().remove(ResourceType.GOLD,  upKeepFee);
         // Add the resources to the player
         gameWorld.getResourceStock().add(resource, amount);
     }

@@ -1,98 +1,43 @@
 {
   "seed": 12345,
   "player": {
-    "x": 412.37406999999945,
-    "y": 239.49610999999993
+    "x": -5908.765610000012,
+    "y": -6327.013510000014
   },
   "resources": {
-    "wood": 50,
-    "stone": 71,
-    "wheat": 130,
-    "gold": 93
+    "wood": 80,
+    "stone": 90,
+    "wheat": 90,
+    "gold": 100
   },
   "gameTime": {
-    "elapsedTime": 38.200470999999844
+    "elapsedTime": 38.44281639999992
   },
   "buildings": [
     {
       "position": {
-        "x": 9,
-        "y": 2
-      },
-      "type": "WOODCUTTER",
-      "level": 1,
-      "productionTimer": 4.830060800000002
-    },
-    {
-      "position": {
-        "x": 10,
-        "y": 1
-      },
-      "type": "MINE",
-      "level": 1,
-      "productionTimer": 4.128938800000004
-    },
-    {
-      "position": {
-        "x": 4,
-        "y": 3
+        "x": -91,
+        "y": -99
       },
       "type": "GOLD_MINE",
       "level": 1,
-      "productionTimer": 5.566032799999999
-    },
-    {
-      "position": {
-        "x": 7,
-        "y": 4
-      },
-      "type": "FIELD",
-      "level": 1,
-      "productionTimer": 5.677349400000002
+      "productionTimer": 4.576159299999999
     }
   ],
   "destroyedResources": [],
   "usedSites": [
     [
       {
-        "x": 10,
-        "y": 1
+        "x": -91,
+        "y": -99
       },
       {
         "position": {
-          "x": 10,
-          "y": 1
+          "x": -91,
+          "y": -99
         },
-        "type": "STONE_QUARY_PURE",
-        "storage": 654
-      }
-    ],
-    [
-      {
-        "x": 9,
-        "y": 2
-      },
-      {
-        "position": {
-          "x": 9,
-          "y": 2
-        },
-        "type": "FOREST",
-        "storage": 1590
-      }
-    ],
-    [
-      {
-        "x": 4,
-        "y": 3
-      },
-      {
-        "position": {
-          "x": 4,
-          "y": 3
-        },
-        "type": "GOLD_QUARY_IMPURE",
-        "storage": 411
+        "type": "GOLD_QUARY_NORMAL",
+        "storage": 5
       }
     ]
   ]
