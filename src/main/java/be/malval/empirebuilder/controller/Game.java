@@ -1,5 +1,6 @@
 package be.malval.empirebuilder.controller;
 
+import be.malval.empirebuilder.configuration.Paths;
 import be.malval.empirebuilder.model.GameWorld;
 import be.malval.empirebuilder.model.GridPosition;
 import be.malval.empirebuilder.model.Resource.ResourceType;
@@ -10,12 +11,15 @@ import be.malval.empirebuilder.model.placeable.site.Site;
 import be.malval.empirebuilder.model.player.PlayerDirection;
 import be.malval.empirebuilder.renderer.GameRenderer;
 import be.malval.empirebuilder.system.ProductionSystem;
+import be.malval.empirebuilder.system.save.SaveSystem;
 import be.malval.empirebuilder.ui.GameUI;
 import javafx.animation.AnimationTimer;
 import javafx.application.Platform;
 import javafx.geometry.Point2D;
 import javafx.scene.Scene;
 import javafx.scene.layout.StackPane;
+
+import java.util.Objects;
 
 public class Game implements GameActionListener {
     // Controllers
@@ -49,18 +53,18 @@ public class Game implements GameActionListener {
     // System
     private final ProductionSystem productionSystem;
 
-    public Game() {
+    public Game(GameWorld gameWorld) {
         // Models
-        gameWorld = new GameWorld();
+        this.gameWorld = Objects.requireNonNullElseGet(gameWorld, GameWorld::new);
         // GUI
-        renderer = new GameRenderer(gameWorld);
+        renderer = new GameRenderer(this.gameWorld);
         renderer.setOnWorldClicked(this::onWorldClicked);
         renderer.setOnMouseMoved(this::onMouseMoved);
         ui = new GameUI(this);
         gameRoot = new StackPane();
         gameRoot.getChildren().addAll( renderer.getRoot(), ui.getRoot() );
         // Controllers
-        buildingActionListener = new BuildingController(gameWorld, ui);
+        buildingActionListener = new BuildingController(this.gameWorld, ui);
         ui.setBuildingActionListener(buildingActionListener);
         constructionUiActionListener = new ConstructionUiController(this, ui);
         ui.setConstructionUiActionListener(constructionUiActionListener);
@@ -99,7 +103,8 @@ public class Game implements GameActionListener {
         }
         Building building = new Building(
                 position,
-                selectedBuildingType
+                selectedBuildingType,
+                1
         );
         if (!gameWorld.getResourceStock().remove(selectedBuildingType)) {
             ui.showMessage("Pas assez de ressources !");
@@ -263,7 +268,7 @@ public class Game implements GameActionListener {
     private void togglePause() {
         paused = !paused;
         if (paused) {
-            ui.showPauseMenu(this::resumeGame, this::quitGame);
+            ui.showPauseMenu(this::resumeGame, this::quitGame, this::saveGame);
         }
         else {
             ui.hidePauseMenu();
@@ -277,6 +282,10 @@ public class Game implements GameActionListener {
 
     private void quitGame() {
         Platform.exit();
+    }
+
+    private void saveGame() {
+        SaveSystem.save(Paths.SAVE_FILE, gameWorld);
     }
 
     // GETTERS

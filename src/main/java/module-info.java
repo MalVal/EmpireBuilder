@@ -1,15 +1,13 @@
-module be.malval.empirebuilder {
+open module be.malval.empirebuilder {
     requires javafx.controls;
     requires javafx.fxml;
     requires org.json;
+    requires com.google.gson;
 
-
-    opens be.malval.empirebuilder to javafx.fxml;
     exports be.malval.empirebuilder;
     exports be.malval.empirebuilder.ui;
-    opens be.malval.empirebuilder.ui to javafx.fxml;
     exports be.malval.empirebuilder.renderer;
-    opens be.malval.empirebuilder.renderer to javafx.fxml;
     exports be.malval.empirebuilder.controller;
-    opens be.malval.empirebuilder.controller to javafx.fxml;
+    exports be.malval.empirebuilder.system;
+    exports be.malval.empirebuilder.model;
 }

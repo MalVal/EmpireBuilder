@@ -10,6 +10,7 @@ import be.malval.empirebuilder.model.world.WorldChunk;
 import be.malval.empirebuilder.model.world.WorldState;
 import be.malval.empirebuilder.system.GameTime;
 import be.malval.empirebuilder.system.WorldGenerator;
+import be.malval.empirebuilder.system.save.SaveData;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -31,6 +32,21 @@ public class GameWorld {
         seed = 12345L;
         chunks = new HashMap<>();
         gameTime = new GameTime();
+    }
+
+    public GameWorld(SaveData data) {
+        player = new Player(data.player.x, data.player.y);
+        List<Placeable> placeables = new ArrayList<>();
+        for(SaveData.BuildingData buildingData : data.buildings) {
+            Building building = new Building(buildingData.position, buildingData.type, buildingData.level);
+            building.setProductionTimer(buildingData.productionTimer);
+            placeables.add(building);
+        }
+        worldState = new WorldState(placeables, data.destroyedResources, data.usedSites);
+        resourceStock = new ResourceStock(data.resources.wood, data.resources.stone, data.resources.wheat, data.resources.gold);
+        seed = data.seed;
+        chunks = new HashMap<>();
+        gameTime = new GameTime(data.gameTime.elapsedTime);
     }
 
     public boolean isOccupied(GridPosition position) {
@@ -71,7 +87,16 @@ public class GameWorld {
 
     public WorldChunk getChunk(int chunkX, int chunkY) {
         String key = chunkX + ":" + chunkY;
-        return chunks.computeIfAbsent(key, ignored -> WorldGenerator.generateChunk(seed, chunkX, chunkY));
+        WorldChunk chunk = chunks.computeIfAbsent(key, ignored -> WorldGenerator.generateChunk(seed, chunkX, chunkY));
+        // If a site is already used remove the storage
+        for(Placeable placeable : chunk.getPlaceables()) {
+            if(placeable instanceof Site site) {
+                if(worldState.getUsedSites().containsKey(placeable.getPosition())) {
+                    site.setStorage(worldState.getUsedSites().get(placeable.getPosition()).getStorage());
+                }
+            }
+        }
+        return chunk;
     }
 
     public List<WorldChunk> getVisibleChunks(int minChunkX, int maxChunkX, int minChunkY, int maxChunkY) {
@@ -146,5 +171,9 @@ public class GameWorld {
 
     public GameTime getGameTime() {
         return gameTime;
+    }
+
+    public long getSeed() {
+        return seed;
     }
 }

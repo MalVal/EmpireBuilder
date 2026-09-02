@@ -9,10 +9,10 @@ public class Building implements Placeable {
     private int level;
     private double productionTimer;
 
-    public Building(GridPosition position, BuildingType type) {
+    public Building(GridPosition position, BuildingType type, int level) {
         this.position = position;
         this.type = type;
-        this.level = 1;
+        this.level = level;
         this.productionTimer = type.getProductionTime();
     }
 
@@ -48,13 +48,17 @@ public class Building implements Placeable {
         return productionTimer;
     }
 
+    public int getLevel() {
+        return level;
+    }
+
     // SETTERS
     @Override
     public void setPosition(GridPosition position) {
         this.position = position;
     }
 
-    public int getLevel() {
-        return level;
+    public void setProductionTimer(double productionTimer) {
+        this.productionTimer = productionTimer;
     }
 }

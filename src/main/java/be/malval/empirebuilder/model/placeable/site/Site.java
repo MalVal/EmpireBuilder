@@ -31,9 +31,17 @@ public class Site implements Placeable {
         return type;
     }
 
+    public int getStorage() {
+        return storage;
+    }
+
     // SETTERS
     @Override
     public void setPosition(GridPosition position) {
         this.position = position;
+    }
+
+    public void setStorage(int storage) {
+        this.storage = storage;
     }
 }

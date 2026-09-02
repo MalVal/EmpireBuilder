@@ -1,10 +1,14 @@
 package be.malval.empirebuilder;
 
+import be.malval.empirebuilder.configuration.Paths;
 import be.malval.empirebuilder.controller.Game;
+import be.malval.empirebuilder.system.save.SaveSystem;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Objects;
 
 public class Main extends Application {
@@ -14,7 +18,13 @@ public class Main extends Application {
     @Override
     public void start(Stage stage) {
         // Create the game controller
-        Game game = new Game();
+        Game game;
+        if (!Files.exists(Paths.SAVE_FILE)) {
+            game = new Game(null);
+        }
+        else {
+            game = new Game(SaveSystem.load(Paths.SAVE_FILE));
+        }
 
         // Create the GUI
         Scene scene = new Scene(

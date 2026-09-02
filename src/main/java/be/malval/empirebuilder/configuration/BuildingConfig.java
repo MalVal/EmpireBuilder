@@ -9,14 +9,12 @@ import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
 public class BuildingConfig {
-    private static final Path CONFIG_FILE = Path.of("data", "buildings.json");
     private static final Map<String, BuildingData> DATA = new LinkedHashMap<>();
 
     static {
@@ -38,10 +36,10 @@ public class BuildingConfig {
 
     private static void load() {
         try {
-            if (!Files.exists(CONFIG_FILE)) {
+            if (!Files.exists(Paths.BUILDING_CONFIG_FILE)) {
                 createDefaultFile();
             }
-            String content = Files.readString(CONFIG_FILE, StandardCharsets.UTF_8);
+            String content = Files.readString(Paths.BUILDING_CONFIG_FILE, StandardCharsets.UTF_8);
             JSONObject json = new JSONObject(content);
             for (String key : json.keySet()) {
                 DATA.put(key, parseBuildingData(json.getJSONObject(key)));
@@ -49,7 +47,7 @@ public class BuildingConfig {
         }
         catch (IOException e) {
             throw new UncheckedIOException(
-                    "Error when loading :" + CONFIG_FILE, e
+                    "Error when loading :" + Paths.BUILDING_CONFIG_FILE, e
             );
         }
     }
@@ -118,9 +116,9 @@ public class BuildingConfig {
         JSONObject json = new JSONObject();
         defaults.forEach((name, data) -> json.put(name, toJson(data)));
 
-        Files.createDirectories(CONFIG_FILE.getParent());
+        Files.createDirectories(Paths.BUILDING_CONFIG_FILE.getParent());
         Files.writeString(
-                CONFIG_FILE,
+                Paths.BUILDING_CONFIG_FILE,
                 json.toString(4),
                 StandardCharsets.UTF_8
         );
@@ -141,7 +139,6 @@ public class BuildingConfig {
         }
         obj.put("costs", costsArray);
         obj.put("upKeepFee", data.upKeepFee());
-
         return obj;
     }
 
@@ -149,7 +146,7 @@ public class BuildingConfig {
         BuildingData data = DATA.get(buildingName);
         if (data == null) {
             throw new IllegalArgumentException(
-                    "Aucune configuration trouvée pour : " + buildingName
+                    "No configuration found for : " + buildingName
             );
         }
         return data;

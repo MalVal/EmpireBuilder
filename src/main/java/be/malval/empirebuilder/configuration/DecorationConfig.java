@@ -7,12 +7,10 @@ import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class DecorationConfig {
-    private static final Path CONFIG_FILE = Path.of("data", "decorations.json");
     private static final Map<String, DecorationData> DATA = new LinkedHashMap<>();
 
     static {
@@ -31,10 +29,10 @@ public class DecorationConfig {
 
     private static void load() {
         try {
-            if (!Files.exists(CONFIG_FILE)) {
+            if (!Files.exists(Paths.DECORATION_CONFIG_FILE)) {
                 createDefaultFile();
             }
-            String content = Files.readString(CONFIG_FILE, StandardCharsets.UTF_8);
+            String content = Files.readString(Paths.DECORATION_CONFIG_FILE, StandardCharsets.UTF_8);
             JSONObject json = new JSONObject(content);
             for (String key : json.keySet()) {
                 DATA.put(key, parseDecorationData(json.getJSONObject(key)));
@@ -42,7 +40,7 @@ public class DecorationConfig {
         }
         catch (IOException e) {
             throw new UncheckedIOException(
-                    "Error when loading :" + CONFIG_FILE, e
+                    "Error when loading :" + Paths.DECORATION_CONFIG_FILE, e
             );
         }
     }
@@ -65,9 +63,9 @@ public class DecorationConfig {
         defaults.put("GOLD_ROCK", new DecorationData(300, ResourceType.GOLD, 10));
         JSONObject json = new JSONObject();
         defaults.forEach((name, data) -> json.put(name, toJson(data)));
-        Files.createDirectories(CONFIG_FILE.getParent());
+        Files.createDirectories(Paths.DECORATION_CONFIG_FILE.getParent());
         Files.writeString(
-                CONFIG_FILE,
+                Paths.DECORATION_CONFIG_FILE,
                 json.toString(4),
                 StandardCharsets.UTF_8
         );
@@ -85,7 +83,7 @@ public class DecorationConfig {
         DecorationData data = DATA.get(decorationName);
         if (data == null) {
             throw new IllegalArgumentException(
-                    "Aucune configuration trouvée pour : " + decorationName
+                    "No configuration found for : " + decorationName
             );
         }
         return data;

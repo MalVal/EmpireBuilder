@@ -1,0 +1,81 @@
+{
+  "seed": 12345,
+  "player": {
+    "x": 376.7183799999999,
+    "y": 107.02193000000014
+  },
+  "resources": {
+    "wood": 10,
+    "stone": 64,
+    "wheat": 70,
+    "gold": 102
+  },
+  "gameTime": {
+    "elapsedTime": 35.02685570000005
+  },
+  "buildings": [
+    {
+      "position": {
+        "x": 4,
+        "y": 3
+      },
+      "type": "GOLD_MINE",
+      "level": 1,
+      "productionTimer": 1.3574408000000049
+    },
+    {
+      "position": {
+        "x": 10,
+        "y": 1
+      },
+      "type": "MINE",
+      "level": 1,
+      "productionTimer": 6.5031475999999975
+    },
+    {
+      "position": {
+        "x": 9,
+        "y": 2
+      },
+      "type": "WOODCUTTER",
+      "level": 1,
+      "productionTimer": 1.9339208999999957
+    },
+    {
+      "position": {
+        "x": 7,
+        "y": 3
+      },
+      "type": "FIELD",
+      "level": 1,
+      "productionTimer": 1.9277291999999975
+    }
+  ],
+  "destroyedResources": [],
+  "usedSites": {
+    "GridPosition[x\u003d10, y\u003d1]": {
+      "position": {
+        "x": 10,
+        "y": 1
+      },
+      "type": "STONE_QUARY_PURE",
+      "storage": 661
+    },
+    "GridPosition[x\u003d9, y\u003d2]": {
+      "position": {
+        "x": 9,
+        "y": 2
+      },
+      "type": "FOREST",
+      "storage": 1630
+    },
+    "GridPosition[x\u003d4, y\u003d3]": {
+      "position": {
+        "x": 4,
+        "y": 3
+      },
+      "type": "GOLD_QUARY_IMPURE",
+      "storage": 411
+    }
+  }
+}

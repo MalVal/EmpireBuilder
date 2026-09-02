@@ -47,6 +47,8 @@ public class ProductionSystem {
                 gameWorld.getWorldState().destroy(site.getPosition());
                 return;
             }
+            // Save used sites
+            gameWorld.getWorldState().getUsedSites().put(building.getPosition(), site);
         }
         // Add the resources to the player
         gameWorld.getResourceStock().add(resource, amount);

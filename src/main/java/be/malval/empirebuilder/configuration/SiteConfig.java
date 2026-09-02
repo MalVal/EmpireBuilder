@@ -7,12 +7,10 @@ import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class SiteConfig {
-    private static final Path CONFIG_FILE = Path.of("data", "sites.json");
     private static final Map<String, SiteData> DATA = new LinkedHashMap<>();
 
     static {
@@ -31,10 +29,10 @@ public class SiteConfig {
 
     private static void load() {
         try {
-            if (!Files.exists(CONFIG_FILE)) {
+            if (!Files.exists(Paths.SITE_CONFIG_FILE)) {
                 createDefaultFile();
             }
-            String content = Files.readString(CONFIG_FILE, StandardCharsets.UTF_8);
+            String content = Files.readString(Paths.SITE_CONFIG_FILE, StandardCharsets.UTF_8);
             JSONObject json = new JSONObject(content);
             for (String key : json.keySet()) {
                 DATA.put(key, parseSiteData(json.getJSONObject(key)));
@@ -42,7 +40,7 @@ public class SiteConfig {
         }
         catch (IOException e) {
             throw new UncheckedIOException(
-                    "Error when loading :" + CONFIG_FILE, e
+                    "Error when loading :" + Paths.SITE_CONFIG_FILE, e
             );
         }
     }
@@ -69,9 +67,9 @@ public class SiteConfig {
         defaults.put("GOLD_QUARY_PURE", new SiteData(ResourceType.GOLD, 210, 1.5));
         JSONObject json = new JSONObject();
         defaults.forEach((name, data) -> json.put(name, toJson(data)));
-        Files.createDirectories(CONFIG_FILE.getParent());
+        Files.createDirectories(Paths.SITE_CONFIG_FILE.getParent());
         Files.writeString(
-                CONFIG_FILE,
+                Paths.SITE_CONFIG_FILE,
                 json.toString(4),
                 StandardCharsets.UTF_8
         );
@@ -89,7 +87,7 @@ public class SiteConfig {
         SiteData data = DATA.get(siteName);
         if (data == null) {
             throw new IllegalArgumentException(
-                    "Aucune configuration trouvée pour : " + siteName
+                    "No configuration found for : " + siteName
             );
         }
         return data;

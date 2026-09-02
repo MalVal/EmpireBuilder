@@ -86,7 +86,7 @@ public class GameUI {
         buildingUI.getRoot().setVisible(false);
     }
 
-    public void showPauseMenu(Runnable onResume, Runnable onQuit) {
+    public void showPauseMenu(Runnable onResume, Runnable onQuit, Runnable onSave) {
         VBox menu = new VBox(15);
         menu.setAlignment(Pos.CENTER);
         menu.getStyleClass().add("pause-menu");
@@ -96,6 +96,10 @@ public class GameUI {
         resumeButton.setOnAction(event ->
                 onResume.run()
         );
+        Button saveButton = new Button("Sauvegarder");
+        saveButton.setOnAction(event ->
+                onSave.run()
+        );
         Button quitButton = new Button("Quitter");
         quitButton.setOnAction(event ->
                 onQuit.run()
@@ -103,6 +107,7 @@ public class GameUI {
         menu.getChildren().addAll(
                 title,
                 resumeButton,
+                saveButton,
                 quitButton
         );
         pauseMenu = new StackPane(menu);

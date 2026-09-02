@@ -102,6 +102,7 @@ public class WorldGenerator {
                             );
                         }
                     }
+
                     chunk.addPlaceable(site);
                 }
             }
