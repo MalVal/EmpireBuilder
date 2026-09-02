@@ -128,8 +128,8 @@
 
     -fx-padding: 12px;
 
-    -fx-pref-width: 220px;
-    -fx-max-width: 220px;
+    -fx-min-width: 220px;
+    -fx-max-width: 350px;
 }
 
 .building-name {

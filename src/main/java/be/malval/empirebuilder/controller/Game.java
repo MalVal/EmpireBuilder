@@ -111,6 +111,12 @@ public class Game implements GameActionListener {
             return;
         }
         gameWorld.getWorldState().addPlaceable(building);
+        if(selectedBuildingType.isRequiredSite()) {
+            // Save used sites
+            Site site = gameWorld.getSite(position);
+            gameWorld.getWorldState().getUsedSites().put(building.getPosition(), site);
+            System.out.println(gameWorld.getWorldState().getUsedSites());
+        }
         placementMode = false;
         selectedBuildingType = null;
     }

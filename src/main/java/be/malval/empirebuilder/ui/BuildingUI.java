@@ -9,6 +9,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 
 public class BuildingUI {
@@ -17,6 +18,7 @@ public class BuildingUI {
     private final Label levelLabel;
     private final Label productionLabel;
     private final Label upKeepFeeLabel;
+    private final Label siteLabel;
     private final Button upgradeButton;
     private final Button destroyButton;
     private Building currentBuilding;
@@ -25,8 +27,9 @@ public class BuildingUI {
         root = new VBox(8);
         root.setAlignment(Pos.CENTER);
         root.setPadding(new Insets(12));
-        root.setPrefWidth(220);
-        root.setMaxWidth(220);
+        root.setMinWidth(220);
+        root.setPrefWidth(Region.USE_COMPUTED_SIZE);
+        root.setMaxWidth(350);
         root.setPrefHeight(180);
         root.setMaxHeight(180);
         root.getStyleClass().add("building-panel");
@@ -34,10 +37,12 @@ public class BuildingUI {
         levelLabel = new Label();
         productionLabel = new Label();
         upKeepFeeLabel = new Label();
+        siteLabel = new Label();
         nameLabel.getStyleClass().add("building-name");
         levelLabel.getStyleClass().add("building-stat");
         productionLabel.getStyleClass().add("building-stat");
         upKeepFeeLabel.getStyleClass().add("building-stat");
+        siteLabel.getStyleClass().add("building-stat");
         upgradeButton = new Button("Améliorer");
         upgradeButton.setMaxWidth(Double.MAX_VALUE);
         destroyButton = new Button("Détruire");
@@ -47,6 +52,7 @@ public class BuildingUI {
                 levelLabel,
                 productionLabel,
                 upKeepFeeLabel,
+                siteLabel,
                 upgradeButton,
                 destroyButton
         );
@@ -78,6 +84,12 @@ public class BuildingUI {
         upKeepFeeLabel.setText(
                 "Coûts de production (or) : " + (int) (building.getType().getUpKeepFee() * LevelConfig.getMultiplier(building.getLevel()))
         );
+        if(building.getType().isRequiredSite()) {
+            siteLabel.setText("Ressources restantes à extraire : " + gameWorld.getWorldState().getUsedSites().get(building.getPosition()).getStorage());
+        }
+        else {
+            siteLabel.setText("");
+        }
     }
 
     // SETTERS
