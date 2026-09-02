@@ -7,7 +7,6 @@ import be.malval.empirebuilder.model.placeable.Placeable;
 import be.malval.empirebuilder.model.placeable.building.Building;
 import be.malval.empirebuilder.model.placeable.decoration.Decoration;
 import be.malval.empirebuilder.model.placeable.site.Site;
-import be.malval.empirebuilder.model.player.PlayerDirection;
 import be.malval.empirebuilder.model.world.WorldChunk;
 import javafx.geometry.Point2D;
 import javafx.geometry.Rectangle2D;
@@ -41,7 +40,12 @@ public class GameRenderer {
     private final Image impureGoldQuaryImage;
     private final Image normalGoldQuaryImage;
     private final Image pureGoldQuaryImage;
-    private final Image playerSprite;
+    private final Image fieldImage;
+    private final Image woodcutterImage;
+    private final Image mineImage;
+    private final Image goldMineImage;
+    private final Image houseImage;
+    private final Image storageImage;
     private final ImageView playerImage;
 
     public GameRenderer(GameWorld gameWorld) {
@@ -96,9 +100,28 @@ public class GameRenderer {
                         getClass().getResourceAsStream("/img/pure-gold-quary.png")
                 )
         );
-
-        playerSprite = new Image(
-                getClass().getResourceAsStream("/img/player.png")
+        fieldImage = new Image(
+                Objects.requireNonNull(
+                        getClass().getResourceAsStream("/img/field.png")
+                )
+        );
+        woodcutterImage = new Image(
+                Objects.requireNonNull(getClass().getResourceAsStream("/img/woodcutter.png"))
+        );
+        mineImage = new Image(
+                Objects.requireNonNull(getClass().getResourceAsStream("/img/mine.png"))
+        );
+        goldMineImage = new Image(
+                Objects.requireNonNull(getClass().getResourceAsStream("/img/gold-mine.png"))
+        );
+        houseImage = new Image(
+                Objects.requireNonNull(getClass().getResourceAsStream("/img/house.png"))
+        );
+        storageImage = new Image(
+                Objects.requireNonNull(getClass().getResourceAsStream("/img/storage.png"))
+        );
+        Image playerSprite = new Image(
+                Objects.requireNonNull(getClass().getResourceAsStream("/img/player.png"))
         );
         playerImage = new ImageView(playerSprite);
         playerImage.setFitWidth(TILE_SIZE);
@@ -200,33 +223,36 @@ public class GameRenderer {
         GridPosition position = building.getPosition();
         double screenX = position.x() * TILE_SIZE - camera.getX();
         double screenY = position.y() * TILE_SIZE - camera.getY();
-        Rectangle rectangle = new Rectangle(
-                screenX,
-                screenY,
-                TILE_SIZE,
-                TILE_SIZE
-        );
+        Image image = null;
         switch (building.getType()) {
-            case HOUSE -> rectangle.setFill(Color.BLUE);
-            case WOODCUTTER -> rectangle.setFill(Color.BURLYWOOD);
-            case MINE -> rectangle.setFill(Color.DARKGRAY);
-            case GOLD_MINE ->  rectangle.setFill(Color.ORANGE);
-            case FIELD ->  rectangle.setFill(Color.YELLOW);
-            case STORAGE -> rectangle.setFill(Color.GREEN);
+            case HOUSE -> image = houseImage;
+            case WOODCUTTER -> image = woodcutterImage;
+            case MINE -> image = mineImage;
+            case GOLD_MINE ->  image = goldMineImage;
+            case FIELD ->  image = fieldImage;
+            case STORAGE -> image = storageImage;
         }
-        root.getChildren().add(rectangle);
-        // Draw the timer
-        if (building.getType().getResourceType() != null) {
-            Text timerText = new Text(
-                    String.format(
-                            "%.1fs",
-                            building.getProductionTimer()
-                    )
-            );
-            timerText.setFill(Color.WHITE);
-            timerText.setX(screenX + 10);
-            timerText.setY(screenY + 30);
-            root.getChildren().add(timerText);
+        if(image != null) {
+            // Draw the image
+            ImageView imageView = new ImageView(image);
+            imageView.setX(screenX);
+            imageView.setY(screenY);
+            imageView.setFitWidth(TILE_SIZE);
+            imageView.setFitHeight(TILE_SIZE);
+            root.getChildren().add(imageView);
+            // Draw the timer
+            if (building.getType().getResourceType() != null) {
+                Text timerText = new Text(
+                        String.format(
+                                "%.1fs",
+                                building.getProductionTimer()
+                        )
+                );
+                timerText.setFill(Color.WHITE);
+                timerText.setX(screenX + 10);
+                timerText.setY(screenY + 30);
+                root.getChildren().add(timerText);
+            }
         }
     }
 
