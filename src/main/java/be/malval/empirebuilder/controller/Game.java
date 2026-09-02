@@ -68,21 +68,6 @@ public class Game implements GameActionListener {
         productionSystem = new ProductionSystem();
     }
 
-    @Override
-    public GameWorld getGameWorld() {
-        return gameWorld;
-    }
-
-    @Override
-    public BuildingActionListener getBuildingActionListener() {
-        return buildingActionListener;
-    }
-
-    @Override
-    public ConstructionUiActionListener getConstructionUiActionListener() {
-        return constructionUiActionListener;
-    }
-
     // Events
     private void onWorldClicked(Point2D screenPosition) {
         GridPosition position = renderer.screenToWorld(screenPosition);
@@ -295,6 +280,21 @@ public class Game implements GameActionListener {
     }
 
     // GETTERS
+    @Override
+    public GameWorld getGameWorld() {
+        return gameWorld;
+    }
+
+    @Override
+    public BuildingActionListener getBuildingActionListener() {
+        return buildingActionListener;
+    }
+
+    @Override
+    public ConstructionUiActionListener getConstructionUiActionListener() {
+        return constructionUiActionListener;
+    }
+
     public StackPane getRoot() {
         return gameRoot;
     }
