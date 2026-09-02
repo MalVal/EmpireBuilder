@@ -6,8 +6,15 @@ import be.malval.empirebuilder.model.Resource.ResourceType;
 import be.malval.empirebuilder.model.placeable.Placeable;
 import be.malval.empirebuilder.model.placeable.building.Building;
 import be.malval.empirebuilder.model.placeable.site.Site;
+import be.malval.empirebuilder.ui.BuildingUI;
 
 public class ProductionSystem {
+    private final BuildingUI buildingUI;
+
+    public ProductionSystem(BuildingUI buildingUI) {
+        this.buildingUI = buildingUI;
+    }
+
     public void update(GameWorld gameWorld, double deltaTime) {
         for (Placeable placeable : gameWorld.getWorldState().getPlaceables()) {
             if (!(placeable instanceof Building building)) {
@@ -49,6 +56,9 @@ public class ProductionSystem {
             }
             // Save used sites
             gameWorld.getWorldState().getUsedSites().put(building.getPosition(), site);
+            if(buildingUI.getCurrentBuilding() == building) {
+                buildingUI.show(building, gameWorld);
+            }
         }
         // Add the resources to the player
         gameWorld.getResourceStock().add(resource, amount);

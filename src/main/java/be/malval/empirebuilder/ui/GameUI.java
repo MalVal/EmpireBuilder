@@ -151,4 +151,7 @@ public class GameUI {
     public ConstructionUI getConstructionUI() {
         return constructionUI;
     }
+    public BuildingUI getBuildingUI() {
+        return buildingUI;
+    }
 }

@@ -69,7 +69,7 @@ public class Game implements GameActionListener {
         constructionUiActionListener = new ConstructionUiController(this, ui);
         ui.setConstructionUiActionListener(constructionUiActionListener);
         // System
-        productionSystem = new ProductionSystem();
+        productionSystem = new ProductionSystem(ui.getBuildingUI());
     }
 
     // Events

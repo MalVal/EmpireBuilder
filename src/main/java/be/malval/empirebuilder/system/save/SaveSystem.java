@@ -15,7 +15,10 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 
 public class SaveSystem {
-    private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
+    private static final Gson GSON = new GsonBuilder()
+            .setPrettyPrinting()
+            .enableComplexMapKeySerialization()
+            .create();
 
     public static void save(Path path, GameWorld gameWorld) {
         try {

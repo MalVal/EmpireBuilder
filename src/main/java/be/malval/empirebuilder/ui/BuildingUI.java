@@ -106,4 +106,8 @@ public class BuildingUI {
     public VBox getRoot() {
         return root;
     }
+
+    public Building getCurrentBuilding() {
+        return currentBuilding;
+    }
 }
