@@ -2,6 +2,7 @@ package be.malval.empirebuilder.ui;
 
 import be.malval.empirebuilder.model.Resource.ResourceStock;
 import be.malval.empirebuilder.system.GameTime;
+import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
@@ -14,6 +15,7 @@ public class ResourceBar {
     private final Label wheatText;
     private final Label goldText;
     private final Label timeText;
+    private final Label dayText;
 
     public ResourceBar() {
         root = new VBox();
@@ -22,6 +24,7 @@ public class ResourceBar {
         wheatText = new Label();
         goldText = new Label();
         timeText = new Label();
+        dayText = new Label();
         root.getChildren().add(createBar());
     }
 
@@ -40,11 +43,18 @@ public class ResourceBar {
                 wheatText,
                 goldText
         );
-        timeText.getStyleClass().add("game-time");
+        HBox timeUI = new HBox(20);
+        timeText.getStyleClass().add("time");
+        dayText.getStyleClass().add("resource-text");
+        timeUI.getStyleClass().add("game-time");
+        timeUI.getChildren().addAll(
+                timeText,
+                dayText
+        );
         // Resources on left
         bar.setLeft(resources);
         // Hours on right
-        bar.setRight(timeText);
+        bar.setRight(timeUI);
         return bar;
     }
 
@@ -63,6 +73,7 @@ public class ResourceBar {
                         gameTime.getMinute()
                 )
         );
+        dayText.setText("Jour " + gameTime.getDay());
     }
 
     public VBox getRoot() {

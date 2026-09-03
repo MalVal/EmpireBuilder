@@ -323,8 +323,8 @@ public class GameRenderer {
             case STONE_QUARY_NORMAL ->  image = normalStoneQuaryImage;
             case STONE_QUARY_PURE -> image = pureStoneQuaryImage;
             case GOLD_QUARY_IMPURE ->  image = impureGoldQuaryImage;
-            case GOLD_QUARY_PURE ->   image = normalGoldQuaryImage;
-            case GOLD_QUARY_NORMAL ->  image = pureGoldQuaryImage;
+            case GOLD_QUARY_NORMAL ->  image = normalGoldQuaryImage;
+            case GOLD_QUARY_PURE ->   image = pureGoldQuaryImage;
         }
         if(image != null) {
             ImageView imageView = new ImageView(image);

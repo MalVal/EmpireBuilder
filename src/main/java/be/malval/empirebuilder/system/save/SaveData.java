@@ -31,6 +31,7 @@ public class SaveData {
 
     public static class GameTimeData {
         public double elapsedTime;
+        public int day;
     }
 
     public static class BuildingData {

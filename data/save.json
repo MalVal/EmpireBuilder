@@ -1,43 +1,108 @@
 {
   "seed": 12345,
   "player": {
-    "x": -5908.765610000012,
-    "y": -6327.013510000014
+    "x": 392.1464799999995,
+    "y": 59.496109999999696
   },
   "resources": {
-    "wood": 80,
-    "stone": 90,
-    "wheat": 90,
-    "gold": 100
+    "wood": 620,
+    "stone": 320,
+    "wheat": 885,
+    "gold": 18
   },
   "gameTime": {
-    "elapsedTime": 38.44281639999992
+    "elapsedTime": 53.32144389999839,
+    "day": 2
   },
   "buildings": [
     {
       "position": {
-        "x": -91,
-        "y": -99
+        "x": 8,
+        "y": -3
+      },
+      "type": "FIELD",
+      "level": 1,
+      "productionTimer": 4.457927099999999
+    },
+    {
+      "position": {
+        "x": 0,
+        "y": -5
+      },
+      "type": "WOODCUTTER",
+      "level": 1,
+      "productionTimer": 3.284445900000004
+    },
+    {
+      "position": {
+        "x": 10,
+        "y": 1
+      },
+      "type": "MINE",
+      "level": 1,
+      "productionTimer": 3.298484000000001
+    },
+    {
+      "position": {
+        "x": 4,
+        "y": 3
       },
       "type": "GOLD_MINE",
       "level": 1,
-      "productionTimer": 4.576159299999999
+      "productionTimer": 3.1176505000000025
+    },
+    {
+      "position": {
+        "x": 3,
+        "y": 1
+      },
+      "type": "HOUSE",
+      "level": 1,
+      "productionTimer": 0.0
     }
   ],
   "destroyedResources": [],
   "usedSites": [
     [
       {
-        "x": -91,
-        "y": -99
+        "x": 0,
+        "y": -5
       },
       {
         "position": {
-          "x": -91,
-          "y": -99
+          "x": 0,
+          "y": -5
         },
-        "type": "GOLD_QUARY_NORMAL",
-        "storage": 5
+        "type": "FOREST",
+        "storage": 1000
+      }
+    ],
+    [
+      {
+        "x": 10,
+        "y": 1
+      },
+      {
+        "position": {
+          "x": 10,
+          "y": 1
+        },
+        "type": "STONE_QUARY_PURE",
+        "storage": 395
+      }
+    ],
+    [
+      {
+        "x": 4,
+        "y": 3
+      },
+      {
+        "position": {
+          "x": 4,
+          "y": 3
+        },
+        "type": "GOLD_QUARY_IMPURE",
+        "storage": 303
       }
     ]
   ]

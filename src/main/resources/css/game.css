@@ -77,13 +77,17 @@
     -fx-font-weight: bold;
 }
 
-.game-time {
+.time {
     -fx-text-fill: white;
     -fx-font-size: 28px;
     -fx-font-weight: bold;
-    -fx-padding: 6px 14px;
+}
+
+.game-time {
     -fx-background-color: #1f1f1f;
     -fx-background-radius: 8px;
+    -fx-padding: 6px 14px;
+    -fx-alignment: center;
 }
 
 .game-message {

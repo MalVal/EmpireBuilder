@@ -38,6 +38,7 @@ public class SaveSystem {
             // Game time
             data.gameTime = new SaveData.GameTimeData();
             data.gameTime.elapsedTime = gameWorld.getGameTime().getElapsedTime();
+            data.gameTime.day = gameWorld.getGameTime().getDay();
             // Buildings
             data.buildings = new ArrayList<>();
             for (Placeable placeable : gameWorld.getWorldState().getPlaceables()) {

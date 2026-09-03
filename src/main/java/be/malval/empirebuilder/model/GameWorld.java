@@ -46,7 +46,7 @@ public class GameWorld {
         resourceStock = new ResourceStock(data.resources.wood, data.resources.stone, data.resources.wheat, data.resources.gold);
         seed = data.seed;
         chunks = new HashMap<>();
-        gameTime = new GameTime(data.gameTime.elapsedTime);
+        gameTime = new GameTime(data.gameTime.elapsedTime, data.gameTime.day);
     }
 
     public boolean isOccupied(GridPosition position) {
