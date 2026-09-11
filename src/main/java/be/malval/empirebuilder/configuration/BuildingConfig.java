@@ -30,7 +30,8 @@ public class BuildingConfig {
             double productionTime,
             List<ResourceCost> costs,
             boolean requiredSite,
-            int upKeepFee
+            int upKeepFee,
+            int stockage
     ) {
     }
 
@@ -72,7 +73,8 @@ public class BuildingConfig {
                 obj.getDouble("productionTime"),
                 costs,
                 obj.getBoolean("requiredSite"),
-                obj.getInt("upKeepFee")
+                obj.getInt("upKeepFee"),
+                obj.getInt("stockage")
         );
     }
 
@@ -83,35 +85,35 @@ public class BuildingConfig {
                 new ResourceCost(ResourceType.WOOD, 20),
                 new ResourceCost(ResourceType.STONE, 10),
                 new ResourceCost(ResourceType.WHEAT, 10)
-        ), false, 1));
+        ), false, 1, 10));
 
         defaults.put("WOODCUTTER", new BuildingData(ResourceType.WOOD, 10, 5, List.of(
                 new ResourceCost(ResourceType.WOOD, 50),
                 new ResourceCost(ResourceType.STONE, 20),
                 new ResourceCost(ResourceType.WHEAT, 10)
-        ), true, 1));
+        ), true, 1, 10));
 
         defaults.put("MINE", new BuildingData(ResourceType.STONE, 5, 8, List.of(
                 new ResourceCost(ResourceType.WOOD, 20),
                 new ResourceCost(ResourceType.STONE, 10),
                 new ResourceCost(ResourceType.WHEAT, 10)
-        ), true, 1));
+        ), true, 1, 10));
 
         defaults.put("GOLD_MINE", new BuildingData(ResourceType.GOLD, 5, 8, List.of(
                 new ResourceCost(ResourceType.WOOD, 20),
                 new ResourceCost(ResourceType.STONE, 10),
                 new ResourceCost(ResourceType.WHEAT, 10)
-        ), true, 1));
+        ), true, 1, 10));
 
         defaults.put("FIELD", new BuildingData(ResourceType.WHEAT, 15, 6, List.of(
                 new ResourceCost(ResourceType.WOOD, 20),
                 new ResourceCost(ResourceType.STONE, 10)
-        ), false, 1));
+        ), false, 1, 10));
 
         defaults.put("STORAGE", new BuildingData(null, 0, 0, List.of(
                 new ResourceCost(ResourceType.WOOD, 20),
                 new ResourceCost(ResourceType.STONE, 10)
-        ), false, 1));
+        ), false, 1, 50));
 
         JSONObject json = new JSONObject();
         defaults.forEach((name, data) -> json.put(name, toJson(data)));
@@ -139,6 +141,7 @@ public class BuildingConfig {
         }
         obj.put("costs", costsArray);
         obj.put("upKeepFee", data.upKeepFee());
+        obj.put("stockage", data.stockage());
         return obj;
     }
 

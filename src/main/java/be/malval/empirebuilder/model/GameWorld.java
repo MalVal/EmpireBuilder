@@ -1,6 +1,7 @@
 package be.malval.empirebuilder.model;
 
 import be.malval.empirebuilder.model.Resource.ResourceStock;
+import be.malval.empirebuilder.model.Resource.ResourceType;
 import be.malval.empirebuilder.model.placeable.Placeable;
 import be.malval.empirebuilder.model.placeable.building.Building;
 import be.malval.empirebuilder.model.placeable.decoration.Decoration;
@@ -72,6 +73,14 @@ public class GameWorld {
             if (placeable.getPosition().equals(position) && !worldState.isDestroyed(position)) {
                 return true;
             }
+        }
+        return false;
+    }
+
+    public boolean addResource(ResourceType resourceType, int amount) {
+        if(getMaxStockage() - getCurrentStockage() >= amount) {
+            resourceStock.add(resourceType, amount);
+            return true;
         }
         return false;
     }
@@ -175,5 +184,19 @@ public class GameWorld {
 
     public long getSeed() {
         return seed;
+    }
+
+    public int getMaxStockage() {
+        int maxStockage = 60;
+        for(Placeable placeable : worldState.getPlaceables()) {
+            if(placeable instanceof Building building) {
+                maxStockage += building.getType().getStockage();
+            }
+        }
+        return maxStockage;
+    }
+
+    public int getCurrentStockage() {
+        return resourceStock.getStone() + resourceStock.getGold() + resourceStock.getWood() + resourceStock.getWheat();
     }
 }

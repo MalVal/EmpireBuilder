@@ -6,13 +6,13 @@ import be.malval.empirebuilder.model.Resource.ResourceType;
 import be.malval.empirebuilder.model.placeable.Placeable;
 import be.malval.empirebuilder.model.placeable.building.Building;
 import be.malval.empirebuilder.model.placeable.site.Site;
-import be.malval.empirebuilder.ui.BuildingUI;
+import be.malval.empirebuilder.ui.GameUI;
 
 public class ProductionSystem {
-    private final BuildingUI buildingUI;
+    private final GameUI ui;
 
-    public ProductionSystem(BuildingUI buildingUI) {
-        this.buildingUI = buildingUI;
+    public ProductionSystem(GameUI ui) {
+        this.ui = ui;
     }
 
     public void update(GameWorld gameWorld, double deltaTime) {
@@ -55,13 +55,15 @@ public class ProductionSystem {
             }
             // Save used sites
             gameWorld.getWorldState().getUsedSites().put(building.getPosition(), site);
-            if(buildingUI.getCurrentBuilding() == building) {
-                buildingUI.show(building, gameWorld);
+            if(ui.getBuildingUI().getCurrentBuilding() == building) {
+                ui.getBuildingUI().show(building, gameWorld);
             }
         }
         // Remove the production cost
         gameWorld.getResourceStock().remove(ResourceType.GOLD,  upKeepFee);
         // Add the resources to the player
-        gameWorld.getResourceStock().add(resource, amount);
+        if(!gameWorld.addResource(resource, amount)) {
+            ui.showMessage("Pas assez de place dans le stock !");
+        }
     }
 }

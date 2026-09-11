@@ -35,32 +35,30 @@ public class ResourceStock {
         }
     }
 
-    public boolean remove(ResourceType resourceType, int amount) {
+    public void remove(ResourceType resourceType, int amount) {
         switch (resourceType) {
             case WOOD:
                 if(wood - amount < 0)
-                    return false;
+                    return;
                 wood -= amount;
                 break;
             case STONE:
                 if(stone - amount < 0)
-                    return false;
+                    return;
                 stone -= amount;
                 break;
             case WHEAT:
                 if(wheat - amount < 0)
-                    return false;
+                    return;
                 wheat -= amount;
                 break;
             case GOLD:
                 if(gold - amount < 0)
-                    return false;
+                    return;
                 gold -= amount;
                 break;
             default:
-                return false;
         }
-        return true;
     }
 
     public boolean remove(BuildingType buildingType) {

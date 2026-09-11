@@ -1,5 +1,6 @@
 {
     "STORAGE": {
+        "stockage": 50,
         "costs": [
             {
                 "amount": 20,
@@ -17,6 +18,7 @@
         "resourceType": null
     },
     "FIELD": {
+        "stockage": 10,
         "costs": [
             {
                 "amount": 20,
@@ -34,6 +36,7 @@
         "resourceType": "WHEAT"
     },
     "MINE": {
+        "stockage": 10,
         "costs": [
             {
                 "amount": 20,
@@ -55,6 +58,7 @@
         "resourceType": "STONE"
     },
     "HOUSE": {
+        "stockage": 10,
         "costs": [
             {
                 "amount": 20,
@@ -76,6 +80,7 @@
         "resourceType": null
     },
     "GOLD_MINE": {
+        "stockage": 10,
         "costs": [
             {
                 "amount": 20,
@@ -97,6 +102,7 @@
         "resourceType": "GOLD"
     },
     "WOODCUTTER": {
+        "stockage": 10,
         "costs": [
             {
                 "amount": 50,

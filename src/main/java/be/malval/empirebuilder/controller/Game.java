@@ -69,7 +69,7 @@ public class Game implements GameActionListener {
         constructionUiActionListener = new ConstructionUiController(this, ui);
         ui.setConstructionUiActionListener(constructionUiActionListener);
         // System
-        productionSystem = new ProductionSystem(ui.getBuildingUI());
+        productionSystem = new ProductionSystem(ui);
     }
 
     // Events
@@ -150,10 +150,9 @@ public class Game implements GameActionListener {
             GridPosition position = decoration.getPosition();
             ResourceType resourceType = decoration.getType().getResourceType();
             int amount = decoration.getType().getResourceAmount();
-            gameWorld.getResourceStock().add(
-                    resourceType,
-                    amount
-            );
+            if(!gameWorld.addResource(resourceType, amount)) {
+                ui.showMessage("Pas assez de place dans le stock !");
+            }
             gameWorld.getWorldState().destroy(position);
             ui.updateHoverInfo(null);
         }
@@ -235,9 +234,7 @@ public class Game implements GameActionListener {
 
     // Draw the world
     private void render() {
-        ui.getResourceBar().updateResources(
-                gameWorld.getResourceStock()
-        );
+        ui.getResourceBar().updateResources(gameWorld);
         if (placementMode && mousePosition != null) {
             GridPosition position = renderer.screenToWorld(mousePosition);
             boolean occupied = gameWorld.isOccupied(position);
@@ -291,7 +288,13 @@ public class Game implements GameActionListener {
     }
 
     private void saveGame() {
-        SaveSystem.save(Paths.SAVE_FILE, gameWorld);
+        try {
+            SaveSystem.save(Paths.SAVE_FILE, gameWorld);
+            ui.showMessage("Sauvegarde réussie !");
+        }
+        catch (Exception e) {
+            ui.showMessage("Erreur de sauvegarde !");
+        }
     }
 
     // GETTERS

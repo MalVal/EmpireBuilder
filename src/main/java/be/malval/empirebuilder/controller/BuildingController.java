@@ -26,7 +26,9 @@ public class BuildingController implements BuildingActionListener {
     public void onBuildingDestroy(Building building) {
         ui.hideBuilding();
         for(ResourceCost resourceCost : building.getType().getCosts()) {
-            gameWorld.getResourceStock().add(resourceCost.type(), (int) (0.5 * resourceCost.amount()));
+            if(!gameWorld.addResource(resourceCost.type(), (int) (0.5 * resourceCost.amount()))) {
+                ui.showMessage("Pas assez de place dans le stock !");
+            }
         }
         gameWorld.getWorldState().removePlaceable(building);
     }

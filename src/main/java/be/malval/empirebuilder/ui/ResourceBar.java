@@ -1,8 +1,7 @@
 package be.malval.empirebuilder.ui;
 
-import be.malval.empirebuilder.model.Resource.ResourceStock;
+import be.malval.empirebuilder.model.GameWorld;
 import be.malval.empirebuilder.system.GameTime;
-import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
@@ -16,6 +15,7 @@ public class ResourceBar {
     private final Label goldText;
     private final Label timeText;
     private final Label dayText;
+    private final Label stockageText;
 
     public ResourceBar() {
         root = new VBox();
@@ -25,6 +25,7 @@ public class ResourceBar {
         goldText = new Label();
         timeText = new Label();
         dayText = new Label();
+        stockageText = new Label();
         root.getChildren().add(createBar());
     }
 
@@ -37,11 +38,13 @@ public class ResourceBar {
         stoneText.getStyleClass().add("resource-text");
         wheatText.getStyleClass().add("resource-text");
         goldText.getStyleClass().add("resource-text");
+        stockageText.getStyleClass().add("resource-text");
         resources.getChildren().addAll(
                 woodText,
                 stoneText,
                 wheatText,
-                goldText
+                goldText,
+                stockageText
         );
         HBox timeUI = new HBox(20);
         timeText.getStyleClass().add("time");
@@ -58,11 +61,12 @@ public class ResourceBar {
         return bar;
     }
 
-    public void updateResources(ResourceStock stock) {
-        woodText.setText("Bois : " + stock.getWood());
-        stoneText.setText("Pierre : " + stock.getStone());
-        wheatText.setText("Blé : " + stock.getWheat());
-        goldText.setText("Or : " + stock.getGold());
+    public void updateResources(GameWorld gameWorld) {
+        woodText.setText("Bois : " + gameWorld.getResourceStock().getWood());
+        stoneText.setText("Pierre : " + gameWorld.getResourceStock().getStone());
+        wheatText.setText("Blé : " + gameWorld.getResourceStock().getWheat());
+        goldText.setText("Or : " + gameWorld.getResourceStock().getGold());
+        stockageText.setText("Stock : " + gameWorld.getCurrentStockage() + " / " + gameWorld.getMaxStockage());
     }
 
     public void updateTime(GameTime gameTime) {
