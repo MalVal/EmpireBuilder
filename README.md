@@ -31,6 +31,7 @@
   - Place everywhere
 - Storage
   - Place everywhere
+  - Increase the stock capacity
 ## Code hints
 - The game is structured as MVC (Model / View / Controller)
 ### Model
