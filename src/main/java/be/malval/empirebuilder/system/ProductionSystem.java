@@ -48,6 +48,12 @@ public class ProductionSystem {
                 return;
             }
             amount = (int) (amount * site.getType().getEfficiency());
+            // Check if the player has enough stockage
+            if(!gameWorld.canAddResource(amount)) {
+                ui.showMessage("Pas assez de place dans le stock !");
+                return;
+            }
+            // Remove the resource of the site
             if(!site.removeResource(amount)) {
                 // Destroy the site when no resource
                 gameWorld.getWorldState().destroy(site.getPosition());
@@ -59,11 +65,11 @@ public class ProductionSystem {
                 ui.getBuildingUI().show(building, gameWorld);
             }
         }
-        // Remove the production cost
-        gameWorld.getResourceStock().remove(ResourceType.GOLD,  upKeepFee);
         // Add the resources to the player
         if(!gameWorld.addResource(resource, amount)) {
             ui.showMessage("Pas assez de place dans le stock !");
         }
+        // Remove the production cost
+        gameWorld.getResourceStock().remove(ResourceType.GOLD,  upKeepFee);
     }
 }

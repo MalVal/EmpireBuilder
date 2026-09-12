@@ -77,8 +77,12 @@ public class GameWorld {
         return false;
     }
 
+    public boolean canAddResource(int amount) {
+        return getMaxStockage() - getCurrentStockage() >= amount;
+    }
+
     public boolean addResource(ResourceType resourceType, int amount) {
-        if(getMaxStockage() - getCurrentStockage() >= amount) {
+        if(canAddResource(amount)) {
             resourceStock.add(resourceType, amount);
             return true;
         }
