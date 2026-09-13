@@ -66,7 +66,7 @@ public class GameUI {
         messageLabel.getStyleClass().add("game-message");
         StackPane.setAlignment(
                 messageLabel,
-                Pos.CENTER
+                Pos.CENTER_LEFT
         );
         root.getChildren().add(messageLabel);
         PauseTransition pause =
