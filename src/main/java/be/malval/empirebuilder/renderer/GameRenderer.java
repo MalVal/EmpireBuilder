@@ -241,18 +241,15 @@ public class GameRenderer {
             imageView.setFitHeight(TILE_SIZE);
             root.getChildren().add(imageView);
             // Draw the timer
-            if (building.getType().getResourceType() != null) {
-                Text timerText = new Text(
-                        String.format(
-                                "%.1fs",
-                                building.getProductionTimer()
-                        )
-                );
-                timerText.setFill(Color.WHITE);
-                timerText.setX(screenX + 10);
-                timerText.setY(screenY + 30);
-                root.getChildren().add(timerText);
-            }
+            Text timerText = new Text(
+                    String.format(
+                            "%.1fs",
+                            building.getProductionTimer()
+                    ));
+            timerText.setFill(Color.WHITE);
+            timerText.setX(screenX + 10);
+            timerText.setY(screenY + 30);
+            root.getChildren().add(timerText);
         }
     }
 

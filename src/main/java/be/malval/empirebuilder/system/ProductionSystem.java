@@ -20,9 +20,6 @@ public class ProductionSystem {
             if (!(placeable instanceof Building building)) {
                 continue;
             }
-            if(building.getType().getResourceType() == null) {
-                continue;
-            }
             building.update(deltaTime);
             if (building.isProductionReady()) {
                 produce(gameWorld, building);

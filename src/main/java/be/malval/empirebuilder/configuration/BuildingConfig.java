@@ -110,7 +110,7 @@ public class BuildingConfig {
                 new ResourceCost(ResourceType.STONE, 10)
         ), false, 1, 10));
 
-        defaults.put("STORAGE", new BuildingData(null, 0, 0, List.of(
+        defaults.put("STORAGE", new BuildingData(null, 0, 60, List.of(
                 new ResourceCost(ResourceType.WOOD, 20),
                 new ResourceCost(ResourceType.STONE, 10)
         ), false, 1, 50));

@@ -6,13 +6,11 @@ import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
 
 public class LevelConfig {
-    private static final Path LEVELS_FILE = Path.of("data", "levels.json");
     private static final int DEFAULT_MAX_LEVEL = 10;
     private static final double DEFAULT_MULTIPLIER_STEP = 0.15;
     private static final Map<Integer, Double> MULTIPLIERS = new TreeMap<>();
@@ -27,10 +25,10 @@ public class LevelConfig {
 
     private static void load() {
         try {
-            if (!Files.exists(LEVELS_FILE)) {
+            if (!Files.exists(Paths.LEVELS_FILE)) {
                 createDefaultFile();
             }
-            String content = Files.readString(LEVELS_FILE, StandardCharsets.UTF_8);
+            String content = Files.readString(Paths.LEVELS_FILE, StandardCharsets.UTF_8);
             JSONObject json = new JSONObject(content);
             for (String key : json.keySet()) {
                 int level = Integer.parseInt(key);
@@ -40,7 +38,7 @@ public class LevelConfig {
         }
         catch (IOException e) {
             throw new UncheckedIOException(
-                    "Error when loading : " + LEVELS_FILE, e
+                    "Error when loading : " + Paths.LEVELS_FILE, e
             );
         }
     }
@@ -57,9 +55,9 @@ public class LevelConfig {
                 json.put(String.valueOf(level), multiplier)
         );
 
-        Files.createDirectories(LEVELS_FILE.getParent());
+        Files.createDirectories(Paths.LEVELS_FILE.getParent());
         Files.writeString(
-                LEVELS_FILE,
+                Paths.LEVELS_FILE,
                 json.toString(4),
                 StandardCharsets.UTF_8
         );

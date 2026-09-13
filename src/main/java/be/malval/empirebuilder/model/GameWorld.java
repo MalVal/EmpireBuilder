@@ -1,9 +1,11 @@
 package be.malval.empirebuilder.model;
 
+import be.malval.empirebuilder.configuration.LevelConfig;
 import be.malval.empirebuilder.model.Resource.ResourceStock;
 import be.malval.empirebuilder.model.Resource.ResourceType;
 import be.malval.empirebuilder.model.placeable.Placeable;
 import be.malval.empirebuilder.model.placeable.building.Building;
+import be.malval.empirebuilder.model.placeable.building.BuildingType;
 import be.malval.empirebuilder.model.placeable.decoration.Decoration;
 import be.malval.empirebuilder.model.placeable.site.Site;
 import be.malval.empirebuilder.model.player.Player;
@@ -29,7 +31,7 @@ public class GameWorld {
     public GameWorld() {
         player = new Player(10 * 64, 5 * 64);
         worldState = new WorldState();
-        resourceStock = new ResourceStock(100, 100, 100, 100);
+        resourceStock = new ResourceStock();
         seed = 12345L;
         chunks = new HashMap<>();
         gameTime = new GameTime();
@@ -194,7 +196,12 @@ public class GameWorld {
         int maxStockage = 60;
         for(Placeable placeable : worldState.getPlaceables()) {
             if(placeable instanceof Building building) {
-                maxStockage += building.getType().getStockage();
+                if(building.getType() == BuildingType.STORAGE) {
+                    maxStockage += (int) (LevelConfig.getMultiplier(building.getLevel()) * building.getType().getStockage());
+                }
+                else {
+                    maxStockage += building.getType().getStockage();
+                }
             }
         }
         return maxStockage;

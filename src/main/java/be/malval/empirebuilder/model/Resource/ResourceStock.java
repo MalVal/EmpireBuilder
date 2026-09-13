@@ -8,6 +8,13 @@ public class ResourceStock {
     private int wheat;
     private int gold;
 
+    public ResourceStock() {
+        wood = 0;
+        stone = 0;
+        wheat = 0;
+        gold = 0;
+    }
+
     public ResourceStock(int wood, int stone, int wheat, int gold) {
         this.wood = wood;
         this.stone = stone;
@@ -35,30 +42,32 @@ public class ResourceStock {
         }
     }
 
-    public void remove(ResourceType resourceType, int amount) {
+    public boolean remove(ResourceType resourceType, int amount) {
         switch (resourceType) {
             case WOOD:
                 if(wood - amount < 0)
-                    return;
+                    return false;
                 wood -= amount;
                 break;
             case STONE:
                 if(stone - amount < 0)
-                    return;
+                    return false;
                 stone -= amount;
                 break;
             case WHEAT:
                 if(wheat - amount < 0)
-                    return;
+                    return false;
                 wheat -= amount;
                 break;
             case GOLD:
                 if(gold - amount < 0)
-                    return;
+                    return false;
                 gold -= amount;
                 break;
             default:
+                return false;
         }
+        return true;
     }
 
     public boolean remove(BuildingType buildingType) {
@@ -95,31 +104,38 @@ public class ResourceStock {
         return true;
     }
 
+    public boolean canAfford(ResourceType resourceType, int amount) {
+        switch (resourceType) {
+            case WOOD:
+                if(amount > wood) {
+                    return false;
+                }
+                break;
+            case STONE:
+                if(amount > stone) {
+                    return false;
+                }
+                break;
+            case WHEAT:
+                if(amount > wheat) {
+                    return false;
+                }
+                break;
+            case GOLD:
+                if(amount > gold) {
+                    return false;
+                }
+                break;
+            default:
+                break;
+        }
+        return true;
+    }
+
     public boolean canAfford(BuildingType type) {
         for (ResourceCost resourceCost : type.getCosts()) {
-            switch (resourceCost.type()) {
-                case WOOD:
-                    if(resourceCost.amount() > wood) {
-                        return false;
-                    }
-                    break;
-                case STONE:
-                    if(resourceCost.amount() > stone) {
-                        return false;
-                    }
-                    break;
-                case WHEAT:
-                    if(resourceCost.amount() > wheat) {
-                        return false;
-                    }
-                    break;
-                case GOLD:
-                    if(resourceCost.amount() > gold) {
-                        return false;
-                    }
-                    break;
-                default:
-                    break;
+            if(!canAfford(resourceCost.type(), resourceCost.amount())) {
+                return false;
             }
         }
         return true;

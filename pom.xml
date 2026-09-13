@@ -2,24 +2,18 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
-
     <modelVersion>4.0.0</modelVersion>
-
     <groupId>be.malval</groupId>
     <artifactId>EmpireBuilder</artifactId>
     <version>0.1.4</version>
-
     <name>EmpireBuilder</name>
-
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.release>24</maven.compiler.release>
         <junit.version>5.12.1</junit.version>
         <javafx.version>21.0.6</javafx.version>
     </properties>
-
     <dependencies>
-
         <!-- JavaFX -->
         <dependency>
             <groupId>org.openjfx</groupId>
@@ -61,12 +55,9 @@
             <version>${junit.version}</version>
             <scope>test</scope>
         </dependency>
-
     </dependencies>
-
     <build>
         <plugins>
-
             <!-- Compilation Java 24 -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -77,27 +68,25 @@
                 </configuration>
             </plugin>
 
-            <!-- JavaFX -->
+            <!-- JavaFX / jlink -->
             <plugin>
                 <groupId>org.openjfx</groupId>
                 <artifactId>javafx-maven-plugin</artifactId>
                 <version>0.0.8</version>
-
+                <configuration>
+                    <mainClass>be.malval.empirebuilder/be.malval.empirebuilder.Main</mainClass>
+                    <jlinkImageName>EmpireBuilder</jlinkImageName>
+                    <launcher>EmpireBuilder</launcher>
+                    <stripDebug>true</stripDebug>
+                    <noHeaderFiles>true</noHeaderFiles>
+                    <noManPages>true</noManPages>
+                    <compress>2</compress>
+                </configuration>
                 <executions>
                     <execution>
-                        <id>default-cli</id>
-
-                        <configuration>
-                            <mainClass>be.malval.empirebuilder.Main</mainClass>
-                            <launcher>EmpireBuilder</launcher>
-
-                            <jlinkZipName>EmpireBuilder</jlinkZipName>
-                            <jlinkImageName>EmpireBuilder</jlinkImageName>
-
-                            <noManPages>true</noManPages>
-                            <stripDebug>true</stripDebug>
-                            <noHeaderFiles>true</noHeaderFiles>
-                        </configuration>
+                        <id>create-runtime-image</id>
+                        <phase>package</phase>
+                        <goals><goal>jlink</goal></goals>
                     </execution>
                 </executions>
             </plugin>
@@ -107,7 +96,6 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
                 <version>3.4.2</version>
-
                 <configuration>
                     <archive>
                         <manifest>
@@ -117,25 +105,32 @@
                 </configuration>
             </plugin>
 
-            <!-- Extraire les librairies -->
+            <!-- Deployments -->
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-dependency-plugin</artifactId>
-                <version>3.8.1</version>
-                <executions>
-                    <execution>
-                        <id>copy-dependencies</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>copy-dependencies</goal>
-                        </goals>
-                        <configuration>
-                            <outputDirectory>${project.build.directory}/lib</outputDirectory>
-                        </configuration>
-                    </execution>
-                </executions>
+                <groupId>org.panteleyev</groupId>
+                <artifactId>jpackage-maven-plugin</artifactId>
+                <version>1.6.6</version>
+                <configuration>
+                    <name>EmpireBuilder</name>
+                    <appVersion>0.1.4</appVersion>
+                    <vendor>MalValCompany</vendor>
+                    <destination>target/dist</destination>
+                    <runtimeImage>target/EmpireBuilder</runtimeImage>
+                    <module>be.malval.empirebuilder/be.malval.empirebuilder.Main</module>
+                    <icon>src/main/resources/img/icon.ico</icon>
+
+                    <!-- Windows -->
+                    <winShortcut>true</winShortcut>
+                    <winMenu>true</winMenu>
+                    <winMenuGroup>Empire Builder</winMenuGroup>
+                    <winDirChooser>true</winDirChooser>
+                    <!--<winConsole>true</winConsole>-->
+
+                    <javaOptions>
+                        <option>-Dfile.encoding=UTF-8</option>
+                    </javaOptions>
+                </configuration>
             </plugin>
         </plugins>
     </build>
-
 </project>

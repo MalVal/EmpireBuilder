@@ -17,9 +17,6 @@ public class Building implements Placeable {
     }
 
     public void update(double deltaTime) {
-        if (type.getResourceType() == null) {
-            return;
-        }
         productionTimer -= deltaTime;
     }
 
