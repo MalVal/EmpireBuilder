@@ -85,7 +85,6 @@ public class GameWorld {
     }
 
     public boolean addResource(ResourceType resourceType, int amount) {
-        if(resourceType == null) return false;
         if(canAddResource(amount)) {
             resourceStock.add(resourceType, amount);
             return true;

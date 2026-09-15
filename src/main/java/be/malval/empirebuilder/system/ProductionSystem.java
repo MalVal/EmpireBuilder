@@ -30,43 +30,47 @@ public class ProductionSystem {
 
     private void produce(GameWorld gameWorld, Building building) {
         ResourceType resource = building.getType().getResourceType();
-        // Up keep fee
-        int upKeepFee = (int) (LevelConfig.getMultiplier(building.getLevel()) * building.getType().getUpKeepFee());
-        if(!(gameWorld.getResourceStock().getGold() >= upKeepFee)) {
-            return;
-        }
-        // Amount
-        int amount = (int) (building.getType().getProductionAmount() * LevelConfig.getMultiplier(building.getLevel()));
-        // If the building required a site
-        if(building.getType().isRequiredSite()) {
-            Site site = gameWorld.getSite(building.getPosition());
-            // If the site is destroyed
-            if(site == null) {
+        // If a building produces a resource
+        if(resource != null) {
+            // Up keep fee
+            int upKeepFee = (int) (LevelConfig.getMultiplier(building.getLevel()) * building.getType().getUpKeepFee());
+            if(!(gameWorld.getResourceStock().getGold() >= upKeepFee)) {
                 return;
             }
-            amount = (int) (amount * site.getType().getEfficiency());
-            // Check if the player has enough stockage
-            if(!gameWorld.canAddResource(amount)) {
+            // Amount
+            int amount = (int) (building.getType().getProductionAmount() * LevelConfig.getMultiplier(building.getLevel()));
+            // If the building required a site
+            if(building.getType().isRequiredSite()) {
+                Site site = gameWorld.getSite(building.getPosition());
+                // If the site is destroyed
+                if(site == null) {
+                    return;
+                }
+                amount = (int) (amount * site.getType().getEfficiency());
+                // Check if the player has enough stockage
+                if(!gameWorld.canAddResource(amount)) {
+                    ui.showMessage("Pas assez de place dans le stock !");
+                    return;
+                }
+                // Remove the resource of the site
+                if(!site.removeResource(amount)) {
+                    // Destroy the site when no resource
+                    gameWorld.getWorldState().destroy(site.getPosition());
+                    return;
+                }
+                // Save used sites
+                gameWorld.getWorldState().getUsedSites().put(building.getPosition(), site);
+                if(ui.getBuildingUI().getCurrentBuilding() == building) {
+                    ui.getBuildingUI().show(building, gameWorld);
+                }
+            }
+            // Add the resources to the player
+            if(!gameWorld.addResource(resource, amount)) {
                 ui.showMessage("Pas assez de place dans le stock !");
                 return;
             }
-            // Remove the resource of the site
-            if(!site.removeResource(amount)) {
-                // Destroy the site when no resource
-                gameWorld.getWorldState().destroy(site.getPosition());
-                return;
-            }
-            // Save used sites
-            gameWorld.getWorldState().getUsedSites().put(building.getPosition(), site);
-            if(ui.getBuildingUI().getCurrentBuilding() == building) {
-                ui.getBuildingUI().show(building, gameWorld);
-            }
+            // Remove the production cost
+            gameWorld.getResourceStock().remove(ResourceType.GOLD,  upKeepFee);
         }
-        // Add the resources to the player
-        if(!gameWorld.addResource(resource, amount)) {
-            ui.showMessage("Pas assez de place dans le stock !");
-        }
-        // Remove the production cost
-        gameWorld.getResourceStock().remove(ResourceType.GOLD,  upKeepFee);
     }
 }

@@ -105,7 +105,7 @@ public class BuildingConfig {
                 new ResourceCost(ResourceType.WHEAT, 10)
         ), true, 1, 10));
 
-        defaults.put("FIELD", new BuildingData(ResourceType.WHEAT, 15, 6, List.of(
+        defaults.put("FIELD", new BuildingData(ResourceType.WHEAT, 5, 6, List.of(
                 new ResourceCost(ResourceType.WOOD, 20),
                 new ResourceCost(ResourceType.STONE, 10)
         ), false, 1, 10));
