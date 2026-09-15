@@ -1,5 +1,6 @@
 package be.malval.empirebuilder.model;
 
+import be.malval.empirebuilder.configuration.GlobalConfig;
 import be.malval.empirebuilder.configuration.LevelConfig;
 import be.malval.empirebuilder.model.Resource.ResourceStock;
 import be.malval.empirebuilder.model.Resource.ResourceType;
@@ -84,6 +85,7 @@ public class GameWorld {
     }
 
     public boolean addResource(ResourceType resourceType, int amount) {
+        if(resourceType == null) return false;
         if(canAddResource(amount)) {
             resourceStock.add(resourceType, amount);
             return true;
@@ -193,7 +195,7 @@ public class GameWorld {
     }
 
     public int getMaxStockage() {
-        int maxStockage = 60;
+        int maxStockage = GlobalConfig.get().defaultStockage();
         for(Placeable placeable : worldState.getPlaceables()) {
             if(placeable instanceof Building building) {
                 if(building.getType() == BuildingType.STORAGE) {

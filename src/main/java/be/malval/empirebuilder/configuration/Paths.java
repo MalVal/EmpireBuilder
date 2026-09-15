@@ -11,6 +11,7 @@ public final class Paths {
     private static final Path APP_DATA_DIR = resolveAppDataDir();
 
     public static final Path SAVE_FILE = APP_DATA_DIR.resolve("save.json");
+    public static final Path GLOBAL_CONFIG_FILE = APP_DATA_DIR.resolve("global.json");
     public static final Path BUILDING_CONFIG_FILE = APP_DATA_DIR.resolve("buildings.json");
     public static final Path DECORATION_CONFIG_FILE = APP_DATA_DIR.resolve("decorations.json");
     public static final Path SITE_CONFIG_FILE = APP_DATA_DIR.resolve("sites.json");
@@ -36,7 +37,7 @@ public final class Paths {
         try {
             Files.createDirectories(appDir);
         } catch (IOException e) {
-            throw new UncheckedIOException("Impossible de créer le dossier de données: " + appDir, e);
+            throw new UncheckedIOException("Impossible to create data folder : " + appDir, e);
         }
 
         return appDir;
