@@ -10,12 +10,12 @@ public final class Paths {
 
     private static final Path APP_DATA_DIR = resolveAppDataDir();
 
-    public static final Path SAVE_FILE = APP_DATA_DIR.resolve("save.json");
-    public static final Path GLOBAL_CONFIG_FILE = APP_DATA_DIR.resolve("global.json");
-    public static final Path BUILDING_CONFIG_FILE = APP_DATA_DIR.resolve("buildings.json");
-    public static final Path DECORATION_CONFIG_FILE = APP_DATA_DIR.resolve("decorations.json");
-    public static final Path SITE_CONFIG_FILE = APP_DATA_DIR.resolve("sites.json");
-    public static final Path LEVELS_FILE = APP_DATA_DIR.resolve("levels.json");
+    public static final Path SAVE_FILE = APP_DATA_DIR.resolve("saves").resolve("save.json");
+    public static final Path GLOBAL_CONFIG_FILE = APP_DATA_DIR.resolve("config").resolve("global.json");
+    public static final Path BUILDING_CONFIG_FILE = APP_DATA_DIR.resolve("config").resolve("buildings.json");
+    public static final Path DECORATION_CONFIG_FILE = APP_DATA_DIR.resolve("config").resolve("decorations.json");
+    public static final Path SITE_CONFIG_FILE = APP_DATA_DIR.resolve("config").resolve("sites.json");
+    public static final Path LEVELS_FILE = APP_DATA_DIR.resolve("config").resolve("levels.json");
 
     private static Path resolveAppDataDir() {
         String os = System.getProperty("os.name").toLowerCase();
@@ -32,7 +32,7 @@ public final class Paths {
             base = Path.of(System.getProperty("user.home"), ".local", "share");
         }
 
-        Path appDir = base.resolve("EmpireBuilder").resolve("data");
+        Path appDir = base.resolve(".empireBuilder");
 
         try {
             Files.createDirectories(appDir);

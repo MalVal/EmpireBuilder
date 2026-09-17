@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>be.malval</groupId>
     <artifactId>EmpireBuilder</artifactId>
-    <version>0.1.4</version>
+    <version>0.1.5</version>
     <name>EmpireBuilder</name>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -112,9 +112,9 @@
                 <version>1.6.6</version>
                 <configuration>
                     <name>EmpireBuilder</name>
-                    <appVersion>0.1.4</appVersion>
+                    <appVersion>0.1.5</appVersion>
                     <vendor>MalValCompany</vendor>
-                    <destination>target/dist</destination>
+                    <destination>dist</destination>
                     <runtimeImage>target/EmpireBuilder</runtimeImage>
                     <module>be.malval.empirebuilder/be.malval.empirebuilder.Main</module>
                     <icon>src/main/resources/img/icon.ico</icon>
