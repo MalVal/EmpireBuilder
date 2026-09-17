@@ -112,8 +112,9 @@ public class BuildingConfig {
 
         defaults.put("STORAGE", new BuildingData(null, 0, 60, List.of(
                 new ResourceCost(ResourceType.WOOD, 20),
-                new ResourceCost(ResourceType.STONE, 10)
-        ), false, 1, 50));
+                new ResourceCost(ResourceType.STONE, 10),
+                new ResourceCost(ResourceType.GOLD, 5)
+        ), false, 0, 50));
 
         JSONObject json = new JSONObject();
         defaults.forEach((name, data) -> json.put(name, toJson(data)));

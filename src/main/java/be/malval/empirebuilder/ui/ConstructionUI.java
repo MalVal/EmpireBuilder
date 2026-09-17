@@ -84,7 +84,7 @@ public class ConstructionUI {
         Button backButton =
                 createMenuButton(
                         "Retour",
-                        event -> {
+                        _ -> {
                             showMainMenu();
                         }
                 );
